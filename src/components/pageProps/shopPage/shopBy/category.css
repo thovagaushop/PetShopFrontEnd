@@ -1,0 +1,17 @@
+.con-list-product {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.text {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+li.parent:hover .text .review-number {
+    cursor: pointer;
+    color: var(--hover-color);
+}
