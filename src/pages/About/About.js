@@ -11,11 +11,12 @@ const About = () => {
   // }, [location]);
 
   const { state } = useAuth();
+  console.log(state);
   if (!state.isAuthenticated) {
     // Redirect to login or handle unauthenticated state
     return <Navigate to="/auth" replace={true} />;
   } else {
-    console.log(state.isAuthenticated);
+    console.log(state);
     return (
       <div className="max-w-container mx-auto px-4">
         <Breadcrumbs title="About" prevLocation={prevLocation} />

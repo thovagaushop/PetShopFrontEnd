@@ -3,9 +3,12 @@ import MainHeader from "../../components/home/Header/MainHeader";
 import { useAuth } from "../../components/context/AuthContext";
 import instance from "../../api/axios";
 import "./auth.css";
+import { parseJwt } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 export default function Auth() {
   const { dispatch } = useAuth();
+  const navigate = useNavigate();
   const [registerData, setRegisterData] = useState({
     email: "",
     firstName: "",
@@ -40,7 +43,11 @@ export default function Auth() {
     );
 
     const token = data.token;
-    dispatch({ type: "LOGIN", payload: { token } });
+    const { exp } = parseJwt(token);
+
+    dispatch({ type: "LOGIN", payload: { token, exp: exp * 1000 } });
+
+    return navigate("/shop");
   };
 
   return (
