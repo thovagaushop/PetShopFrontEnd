@@ -31,7 +31,7 @@ const Product = (props) => {
   return (
     <div className="w-full relative group">
       <div
-        className="max-w-80 max-h-80 relative overflow-y-hidden "
+        className="max-w-80 max-h-100 relative overflow-y-hidden flex flex-col items-center"
         onClick={handleProductDetails}
       >
         <div class="cha-image">

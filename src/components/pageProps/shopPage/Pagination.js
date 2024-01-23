@@ -30,33 +30,29 @@ function Items({ currentItems }) {
 const Pagination = ({ itemsPerPage }) => {
   const [items, setItems] = useState([]);
   const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
   const [itemStart, setItemStart] = useState(1);
+  const [pagination, setPagination] = useState({
+    pageNumber: 0,
+    pageSize: 10,
+    totalPages: 0,
+    totalElements: 0,
+    previousPage: false,
+    lastPage: false,
+  });
 
-  // Simulate fetching items from another resources.
-  // (This could be items from props; or items loaded in a local state
-  // from an API endpoint with useEffect and useState)
   const endOffset = itemOffset + itemsPerPage;
-  //   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = items.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(items.length / itemsPerPage);
 
-  // Invoke when user click to request another page.
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % items.length;
-    setItemOffset(newOffset);
-    // console.log(
-    //   `User requested page number ${event.selected}, which is offset ${newOffset},`
-    // );
-    setItemStart(newOffset);
+    console.log(event.selected);
   };
 
-  const getProducts = async () => {
-    const petType = searchParams.get("pet");
-    const category = searchParams.get("category");
-
+  const getProducts = async (pageNumber, pageSize) => {
     if (category) {
       const { data } = await instance.get(`/category/${category}/products`);
       setItems(data.data);
@@ -69,7 +65,7 @@ const Pagination = ({ itemsPerPage }) => {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [category]);
 
   return (
     <div>
@@ -80,8 +76,8 @@ const Pagination = ({ itemsPerPage }) => {
         <ReactPaginate
           nextLabel=""
           onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={2}
+          pageRangeDisplayed={10}
+          marginPagesDisplayed={0}
           pageCount={pageCount}
           previousLabel=""
           pageLinkClassName="w-9 h-9 border-[1px] border-lightColor hover:border-[var(--violet-color)] duration-300 flex justify-center items-center"
@@ -90,10 +86,10 @@ const Pagination = ({ itemsPerPage }) => {
           activeClassName="bg-[var(--hover-color)] text-white"
         />
 
-        <p className="text-base font-normal text-lightText">
+        {/* <p className="text-base font-normal text-lightText">
           Products from {itemStart === 0 ? 1 : itemStart} to {endOffset} of{" "}
           {items.length}
-        </p>
+        </p> */}
       </div>
     </div>
   );
