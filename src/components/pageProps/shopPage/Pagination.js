@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { isNil } from "lodash";
 import Product from "../../home/Products/Product";
-import { paginationItems } from "../../../constants";
 import { useSearchParams } from "react-router-dom";
 import instance from "../../../api/axios";
 
@@ -12,12 +11,13 @@ function Items({ currentItems }) {
     <>
       {currentItems &&
         currentItems.map((item) => (
-          <div key={item._id} className="w-full">
+          <div key={item._id} className="w-full hover:cursor-pointer">
             <Product
               _id={item.id}
               img={`http://localhost:8080/api/product/images/${item.images[0]}`}
-              productName={item.title}
+              title={item.title}
               price={item.price}
+              rating={item.rating}
               color={item.color}
               badge={item.badge}
               des={item.description}
@@ -45,10 +45,6 @@ const Pagination = ({ itemsPerPage }) => {
     lastPage: false,
   });
 
-  // const endOffset = itemOffset + itemsPerPage;
-  // const currentItems = items.slice(itemOffset, endOffset);
-  // const pageCount = Math.ceil(items.length / itemsPerPage);
-
   const handlePageClick = (event) => {
     setPagination({ ...pagination, pageNumber: event.selected });
     getProducts(event.selected, itemsPerPage);
@@ -66,10 +62,8 @@ const Pagination = ({ itemsPerPage }) => {
           ? `/category/${category}/products?pageNumber=${pageNumber}&pageSize=${pageSize}`
           : `/category/${category}/products`;
 
-    console.log(fetchAxios);
     try {
       const { data } = await instance.get(fetchAxios);
-      console.log(data);
       setItems(data.data);
       setPagination({
         pageNumber: data.pageNumber,
@@ -88,13 +82,12 @@ const Pagination = ({ itemsPerPage }) => {
     getProducts(0, itemsPerPage);
   }, [category]);
 
-  console.log(pagination.pageNumber);
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 mdl:gap-4 lg:gap-10">
         <Items currentItems={items} />
       </div>
-      <div className="flex flex-col mdl:flex-row justify-center mdl:justify-center items-center">
+      <div className="mx-[50px] flex flex-col mdl:flex-row justify-between mdl:justify-between items-center">
         <ReactPaginate
           nextLabel=""
           onPageChange={handlePageClick}
@@ -106,12 +99,13 @@ const Pagination = ({ itemsPerPage }) => {
           pageClassName="mr-6"
           containerClassName="flex text-base font-semibold font-titleFont py-10"
           activeClassName="bg-[var(--hover-color)] text-white"
+          forcePage={pagination.pageNumber}
         />
 
-        {/* <p className="text-base font-normal text-lightText">
-          Products from {itemStart === 0 ? 1 : itemStart} to {endOffset} of{" "}
-          {items.length}
-        </p> */}
+        <p className="text-base font-normal text-lightText">
+          Products from {itemStart === 0 ? 1 : itemStart} to{" "}
+          {itemOffset + itemsPerPage} of {items.length}
+        </p>
       </div>
     </div>
   );

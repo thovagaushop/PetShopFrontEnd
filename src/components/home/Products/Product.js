@@ -9,18 +9,29 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/orebiSlice";
 import "./product.css";
+import { isNil } from "lodash";
 
 const Product = (props) => {
   const dispatch = useDispatch();
-  const _id = props.id;
+  const rootId = props._id;
   // const idString = (_id) => {
   //   return String(_id).toLowerCase().split(" ").join("");
   // };
   // const rootId = idString(_id);
-  const rootId = _id;
-
   const navigate = useNavigate();
   const productItem = props;
+
+  const renderRatingIcons = (rating) => {
+    const ratingIcons = [];
+    for (let i = 0; i < rating; i++) {
+      ratingIcons.push(<i key={i} class="fa-solid fa-star"></i>);
+    }
+    for (let i = rating; i < 5; i++) {
+      ratingIcons.push(<i key={i} class="fa-regular fa-star"></i>);
+    }
+    return ratingIcons;
+  };
+
   const handleProductDetails = () => {
     navigate(`/product/${rootId}`, {
       state: {
@@ -40,15 +51,11 @@ const Product = (props) => {
           </div>
         </div>
         <div class="price">
-          <div class="price-text"> $305.49 </div>
-          <div class="product-title">Fantastic Plastic Clock</div>
+          <div class="price-text"> {props.price} </div>
+          <div class="product-title">{props.title}</div>
           <div class="ratings-review">
             <div class="product-ratings">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-regular fa-star"></i>
+              {!isNil(props.rating) && renderRatingIcons(props.rating)}
             </div>
             <div class="review-number"> (5 reviews) </div>
           </div>

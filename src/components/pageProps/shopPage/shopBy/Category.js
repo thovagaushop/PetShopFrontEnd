@@ -25,7 +25,7 @@ const Category = () => {
   return (
     <div className="w-full">
       <NavTitle title="Product Category" icons={false} />
-      <hr className="border-[var(--grey-bolder)] border-1 pb-[20px]" />
+      <hr className="border-[#F0F0F0] border-1 pb-[20px]" />
       <div>
         <ul className="flex flex-col gap-4 text-sm lg:text-base text-[#767676]">
           {items.length &&
@@ -33,7 +33,7 @@ const Category = () => {
               <li
                 onClick={handleClickCategory(categoryId)}
                 key={categoryId}
-                className="border-b-[1px] border-b-[#F0F0F0] pb-2 flex items-center justify-between hover:cursor-pointer hover:text-[var(--hover-color)] duration-300"
+                className="border-b-[1px] border-b-[#F0F0F0] pb-2 flex items-center justify-between hover:cursor-pointer hover:text-[var(--hover-color)] hover:font-bold duration-100"
               >
                 <div>
                   <img src={dogFoot} alt="" />

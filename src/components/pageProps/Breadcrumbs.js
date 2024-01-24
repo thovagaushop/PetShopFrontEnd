@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { HiOutlineChevronRight } from "react-icons/hi";
-import { useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 
 const Breadcrumbs = ({ prevLocation }) => {
+  console.log(prevLocation);
   const location = useLocation();
   const [locationPath, setLocationPath] = useState("");
   useEffect(() => {
@@ -16,11 +17,23 @@ const Breadcrumbs = ({ prevLocation }) => {
         {title}
       </h1> */}
       <p className="text-sm font-normal text-lightText capitalize flex items-center">
-        <span> {prevLocation === "" ? "Home" : prevLocation}</span>
-
+        <span className="hover:font-bold">
+          <Link to="/"> Home</Link>{" "}
+        </span>
         <span className="px-1">
           <HiOutlineChevronRight />
         </span>
+        {prevLocation && (
+          <>
+            <span className="hover:font-bold">
+              <Link to={`/${prevLocation.toLowerCase()}`}> {prevLocation}</Link>
+            </span>
+            <span className="px-1">
+              <HiOutlineChevronRight />
+            </span>
+          </>
+        )}
+
         <span className="capitalize font-semibold text-primeColor">
           {locationPath}
         </span>
