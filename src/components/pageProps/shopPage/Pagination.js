@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import { isNil } from "lodash";
 import Product from "../../home/Products/Product";
 import { paginationItems } from "../../../constants";
 import { useSearchParams } from "react-router-dom";
@@ -44,41 +45,62 @@ const Pagination = ({ itemsPerPage }) => {
     lastPage: false,
   });
 
-  const endOffset = itemOffset + itemsPerPage;
-  const currentItems = items.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(items.length / itemsPerPage);
+  // const endOffset = itemOffset + itemsPerPage;
+  // const currentItems = items.slice(itemOffset, endOffset);
+  // const pageCount = Math.ceil(items.length / itemsPerPage);
 
   const handlePageClick = (event) => {
-    console.log(event.selected);
+    setPagination({ ...pagination, pageNumber: event.selected });
+    getProducts(event.selected, itemsPerPage);
   };
 
   const getProducts = async (pageNumber, pageSize) => {
-    if (category) {
-      const { data } = await instance.get(`/category/${category}/products`);
+    setPagination({ ...pagination, pageNumber: pageNumber });
+    let fetchAxios =
+      !isNil(pageNumber) && !isNil(pageSize)
+        ? `/product?pageNumber=${pageNumber}&pageSize=${pageSize}`
+        : "/product";
+    if (category)
+      fetchAxios =
+        !isNil(pageNumber) && !isNil(pageSize)
+          ? `/category/${category}/products?pageNumber=${pageNumber}&pageSize=${pageSize}`
+          : `/category/${category}/products`;
+
+    console.log(fetchAxios);
+    try {
+      const { data } = await instance.get(fetchAxios);
+      console.log(data);
       setItems(data.data);
-    } else {
-      const { data } = await instance.get(`/product`);
-      console.log(data.data);
-      setItems(data.data);
+      setPagination({
+        pageNumber: data.pageNumber,
+        pageSize: data.pageSize,
+        totalElements: data.totalElements,
+        totalPages: data.totalPages,
+        previousPage: data.previousPage,
+        lastPage: data.lastPage,
+      });
+    } catch (error) {
+      setItems([]);
     }
   };
 
   useEffect(() => {
-    getProducts();
+    getProducts(0, itemsPerPage);
   }, [category]);
 
+  console.log(pagination.pageNumber);
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 mdl:gap-4 lg:gap-10">
-        <Items currentItems={currentItems} />
+        <Items currentItems={items} />
       </div>
-      <div className="flex flex-col mdl:flex-row justify-center mdl:justify-between items-center">
+      <div className="flex flex-col mdl:flex-row justify-center mdl:justify-center items-center">
         <ReactPaginate
           nextLabel=""
           onPageChange={handlePageClick}
           pageRangeDisplayed={10}
           marginPagesDisplayed={0}
-          pageCount={pageCount}
+          pageCount={pagination.totalPages}
           previousLabel=""
           pageLinkClassName="w-9 h-9 border-[1px] border-lightColor hover:border-[var(--violet-color)] duration-300 flex justify-center items-center"
           pageClassName="mr-6"

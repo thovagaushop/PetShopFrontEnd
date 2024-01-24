@@ -12,7 +12,6 @@ const Category = () => {
   const [items, setItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const handleClickCategory = (category) => () => {
-    console.log(category);
     setSearchParams({ ...searchParams, category });
   };
 
@@ -23,7 +22,6 @@ const Category = () => {
   useEffect(() => {
     getCategories();
   }, []);
-  console.log(items);
   return (
     <div className="w-full">
       <NavTitle title="Product Category" icons={false} />

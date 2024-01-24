@@ -12,7 +12,7 @@ import "./product.css";
 
 const Product = (props) => {
   const dispatch = useDispatch();
-  const _id = props._id;
+  const _id = props.id;
   // const idString = (_id) => {
   //   return String(_id).toLowerCase().split(" ").join("");
   // };
