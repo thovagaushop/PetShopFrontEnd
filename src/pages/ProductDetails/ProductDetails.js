@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { isNil } from "lodash";
 import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import "./productDetail.css";
 import instance from "../../api/axios";
-import { product1 } from "../../assets/images";
-import { isNil, set } from "lodash";
 import { getProductImage } from "../../utils";
 import { addToCart } from "../../redux/orebiSlice";
-import { useDispatch } from "react-redux";
+import { userData } from "../../constants";
 
 const ProductDetails = () => {
   const location = useLocation();
@@ -44,12 +44,46 @@ const ProductDetails = () => {
   };
 
   const handleAddQuantity = () => {
+    if (quantity >= productInfo.quantity) return;
     setQuantity(quantity + 1);
   };
 
   const handleMinusQuantity = () => {
     if (quantity <= 0) return;
     setQuantity(quantity - 1);
+  };
+
+  const handleAddToCart = async () => {
+    if (quantity <= 0) return;
+    const headers = {
+      Authorization: `Bearer ${userData.token}`,
+    };
+    // Call api
+    try {
+      const { data } = await instance.get(`/cart?email=${userData.email}`, {
+        headers,
+      });
+      console.log(data);
+      await instance.post(
+        `/cart/${data.cartId}/${productInfo.id}/quantity/${quantity}`,
+        {},
+        {
+          headers,
+        }
+      );
+      console.log("Add success");
+      dispatch(
+        addToCart({
+          _id: productInfo.id,
+          name: productInfo.productName,
+          quantity: quantity,
+          image: productInfo.img,
+          badge: productInfo.badge,
+          price: productInfo.price,
+          colors: productInfo.color,
+        })
+      );
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -74,24 +108,6 @@ const ProductDetails = () => {
   return (
     <div className="px-[100px]">
       <Breadcrumbs prevLocation={prevLocation} />
-      {/* <div className="max-w-container mx-auto px-4">
-        <div className="xl:-mt-10 -mt-7">
-          <Breadcrumbs title="" prevLocation={prevLocation} />
-        </div>
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-4 h-full -mt-5 xl:-mt-8 pb-10 bg-gray-100 p-4">
-          <div className="h-full xl:col-span-2">
-            <img
-              className="w-full h-full object-cover"
-              src={productInfo.img}
-              alt={productInfo.img}
-            />
-          </div>
-          <div className="h-full w-full md:col-span-2 xl:col-span-3 xl:p-14 flex flex-col gap-6 justify-center">
-            <ProductInfo productInfo={productInfo} />
-          </div>
-        </div>
-      </div> */}
-
       <div className="flex justify-around">
         <div className="w-[600px] flex flex-col justify-start items-center">
           <div className="w-[100%] h-[600px] flex justify-center items-center border border-[#F0F0F0] mb-4">
@@ -110,40 +126,20 @@ const ProductDetails = () => {
                   <img className="w-[90px] h-[90px]" src={image} alt="" />
                 </div>
               ))}
-            {/* <div className="picturetwo">
-              {productInfo.images && (
-                <img
-                  className="w-[90px] h-[90px]"
-                  src={productInfo.images[0]}
-                  alt=""
-                />
-              )}
-            </div>
-            <div className="picturetwo">
-              {productInfo.images && (
-                <img
-                  className="w-[90px] h-[90px]"
-                  src={productInfo.images[1]}
-                  alt=""
-                />
-              )}
-            </div>
-            <div className="picturetwo">
-              {productInfo.images && (
-                <img
-                  className="w-[90px] h-[90px]"
-                  src={productInfo.images[1]}
-                  alt=""
-                />
-              )}
-            </div> */}
           </div>
         </div>
         <div className="flex flex-col w-[40%]">
           <div className="flex justify-between">
-            <div className="text-white rounded-bl-md rounded-br-md rounded-tr-lg rounded-tl-lg bg-[#39B54A] w-[82px] h-[24px] flex justify-center items-center">
-              In Stock
-            </div>
+            {productInfo.quantity > 0 ? (
+              <div className="text-white rounded-bl-md rounded-br-md rounded-tr-lg rounded-tl-lg bg-[#39B54A] w-[82px] h-[24px] flex justify-center items-center">
+                In Stock
+              </div>
+            ) : (
+              <div className="text-white rounded-bl-md rounded-br-md rounded-tr-lg rounded-tl-lg bg-red-500 w-[82px] h-[24px] flex justify-center items-center">
+                Out Stock
+              </div>
+            )}
+
             <div className="divrightbuttons">
               <button className="buttons text-[#999]">
                 <i class="fa-solid fa-arrow-left"></i>
@@ -218,19 +214,7 @@ const ProductDetails = () => {
           </div>
           <div
             className="addall group hover:bg-[var(--hover-color)] hover:cursor-pointer"
-            onClick={() =>
-              dispatch(
-                addToCart({
-                  _id: productInfo.id,
-                  name: productInfo.productName,
-                  quantity: 1,
-                  image: productInfo.img,
-                  badge: productInfo.badge,
-                  price: productInfo.price,
-                  colors: productInfo.color,
-                })
-              )
-            }
+            onClick={handleAddToCart}
           >
             <div className="text-white ">
               <i class="fa-solid fa-cart-shopping"></i>

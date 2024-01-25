@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { Provider } from "react-redux";
-import { store, persistor } from "./redux/store";
+import { store } from "./redux/store";
 import "./index.css";
 import App from "./App";
 import theme from "./theme";
@@ -15,9 +15,9 @@ root.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-      </PersistGate>
+      {/* <PersistGate loading={null} persistor={persistor}> */}
+      <App />
+      {/* </PersistGate> */}
     </Provider>
   </ThemeProvider>
 );

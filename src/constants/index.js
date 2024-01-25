@@ -86,6 +86,15 @@ export const SplOfferData = [
 ];
 // =================== Special Offer data End here ==============
 
+// =================== User data Start here ==============
+export const userData = {
+  token:
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MzNAZ21haWwuY29tIiwiaWF0IjoxNzA2MTUxODA3LCJleHAiOjE3MDYyMzgyMDd9._Yg5_easf26gCrVxG7dvPCYkPcChuuEI7S6dN_eEj_A",
+  type: "Bearer",
+  id: "f0842994-6dbd-4bd0-8372-760f48feb3f2",
+  email: "test33@gmail.com",
+  roles: ["ROLE_USER"],
+};
 // =================== PaginationItems Start here ===============
 
 export const paginationItems = [

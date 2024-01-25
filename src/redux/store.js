@@ -12,22 +12,28 @@ import {
 import storage from "redux-persist/lib/storage";
 import orebiReducer from "./orebiSlice";
 
-const persistConfig = {
-  key: "root",
-  version: 1,
-  storage,
-};
+// const persistConfig = {
+//   key: "root",
+//   version: 1,
+//   storage,
+// };
 
-const persistedReducer = persistReducer(persistConfig, orebiReducer);
+// const persistedReducer = persistReducer(persistConfig, orebiReducer);
+
+// export const store = configureStore({
+//   reducer: { orebiReducer: persistedReducer },
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       serializableCheck: {
+//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//       },
+//     }),
+// });
+
+// export let persistor = persistStore(store);
 
 export const store = configureStore({
-  reducer: { orebiReducer: persistedReducer },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+  reducer: {
+    orebiReducer,
+  },
 });
-
-export let persistor = persistStore(store);

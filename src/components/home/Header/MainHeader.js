@@ -1,12 +1,14 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import "./index.css";
 import { logoMainHeader } from "../../../assets/images";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function MainHeader() {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const formRef = useRef(null);
   const location = useLocation();
+  const products = useSelector((state) => state.orebiReducer.products);
 
   const handleShowLoginForm = () => {
     setShowLoginForm(!showLoginForm);
@@ -122,10 +124,14 @@ export default function MainHeader() {
             <i className="fa-solid fa-heart"></i>
             <span className="count">0</span>
           </div>
-          <div className="information-icon">
-            <i className="fa-solid fa-cart-shopping"></i>
-            <span className="count">0</span>
-          </div>
+          <Link to="/cart">
+            <div className="information-icon">
+              <i className="fa-solid fa-cart-shopping"></i>
+              <span className="count">
+                {products.length ? products.length : 0}
+              </span>
+            </div>
+          </Link>
           <span style={{ fontSize: 14, fontWeight: "bold" }}>$ 0.00</span>
         </div>
       </div>
