@@ -5,3 +5,7 @@ export const parseJwt = (token) => {
     return null;
   }
 };
+
+export const getProductImage = (image) => {
+  return `http://localhost:8080/api/product/images/${image}`;
+};

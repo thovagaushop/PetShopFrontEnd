@@ -4,9 +4,14 @@ import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import "./productDetail.css";
 import instance from "../../api/axios";
 import { product1 } from "../../assets/images";
+import { isNil, set } from "lodash";
+import { getProductImage } from "../../utils";
+import { addToCart } from "../../redux/orebiSlice";
+import { useDispatch } from "react-redux";
 
 const ProductDetails = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const [prevLocation, setPrevLocation] = useState("");
   const [productInfo, setProductInfo] = useState({
     title: "",
@@ -15,9 +20,10 @@ const ProductDetails = () => {
     sku: "",
     rating: 0,
     quantity: 0,
-    images: [""],
+    images: null,
   });
-  const [viewImage, setViewImage] = useState("");
+  const [viewImage, setViewImage] = useState(null);
+  const [quantity, setQuantity] = useState(0);
   const { _id } = useParams();
 
   const renderRatingIcons = (rating) => {
@@ -31,7 +37,20 @@ const ProductDetails = () => {
     return ratingIcons;
   };
 
-  const handleClickImage = () => {};
+  const handleClickImage = (image) => () => {
+    // console.log(e.target);
+    console.log(image);
+    setViewImage(image);
+  };
+
+  const handleAddQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleMinusQuantity = () => {
+    if (quantity <= 0) return;
+    setQuantity(quantity - 1);
+  };
 
   useEffect(() => {
     const getProductById = async (id) => {
@@ -39,12 +58,11 @@ const ProductDetails = () => {
         const { data } = await instance.get(`/product/${id}`);
         setProductInfo({
           ...data,
-          images: data.images.map(
-            (image) => `http://localhost:8080/api/product/images/${image}`
-          ),
+          images: data.images.map((image) => getProductImage(image)),
         });
+        setViewImage(getProductImage(data.images[0]));
       } catch (error) {
-        setProductInfo([]);
+        setProductInfo(null);
       }
     };
     setProductInfo(location.state.item);
@@ -77,16 +95,22 @@ const ProductDetails = () => {
       <div className="flex justify-around">
         <div className="w-[600px] flex flex-col justify-start items-center">
           <div className="w-[100%] h-[600px] flex justify-center items-center border border-[#F0F0F0] mb-4">
-            {productInfo.images && (
-              <img
-                className="w-[250px] h-[300px]"
-                src={productInfo.images[0]}
-                alt=""
-              />
+            {viewImage && (
+              <img className="w-[250px] h-[300px]" src={viewImage} alt="" />
             )}
           </div>
           <div className="w-[100%] flex gap-5 justify-center">
-            <div className="pictureone">
+            {!isNil(productInfo.images) &&
+              productInfo.images.map((image, index) => (
+                <div
+                  className="picturetwo hover:cursor-pointer hover:bg-[var(--hover-color)]"
+                  key={index}
+                  onClick={handleClickImage(image)}
+                >
+                  <img className="w-[90px] h-[90px]" src={image} alt="" />
+                </div>
+              ))}
+            {/* <div className="picturetwo">
               {productInfo.images && (
                 <img
                   className="w-[90px] h-[90px]"
@@ -112,7 +136,7 @@ const ProductDetails = () => {
                   alt=""
                 />
               )}
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex flex-col w-[40%]">
@@ -176,18 +200,39 @@ const ProductDetails = () => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <button className="iconbuttons group hover:bg-[var(--hover-color)]">
+                <button
+                  className="iconbuttons group hover:bg-[var(--hover-color)]"
+                  onClick={handleMinusQuantity}
+                >
                   <i className="fa-solid fa-minus group-hover:text-white"></i>
                 </button>
-                <div className="zero">0</div>
-                <button className="iconbuttons group hover:bg-[var(--hover-color)]">
+                <div className="zero">{quantity}</div>
+                <button
+                  className="iconbuttons group hover:bg-[var(--hover-color)]"
+                  onClick={handleAddQuantity}
+                >
                   <i className="fa-solid fa-plus group-hover:text-white"></i>
                 </button>
               </div>
             </div>
           </div>
-          <div className="addall group">
-            <div className="text-white group-hover:bg-red-400">
+          <div
+            className="addall group hover:bg-[var(--hover-color)] hover:cursor-pointer"
+            onClick={() =>
+              dispatch(
+                addToCart({
+                  _id: productInfo.id,
+                  name: productInfo.productName,
+                  quantity: 1,
+                  image: productInfo.img,
+                  badge: productInfo.badge,
+                  price: productInfo.price,
+                  colors: productInfo.color,
+                })
+              )
+            }
+          >
+            <div className="text-white ">
               <i class="fa-solid fa-cart-shopping"></i>
             </div>
             <div className="text-white items-center font-bold">Add to cart</div>

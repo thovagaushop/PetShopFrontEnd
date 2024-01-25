@@ -4,6 +4,7 @@ import { isNil } from "lodash";
 import Product from "../../home/Products/Product";
 import { useSearchParams } from "react-router-dom";
 import instance from "../../../api/axios";
+import { getProductImage } from "../../../utils";
 
 // const items = paginationItems;
 function Items({ currentItems }) {
@@ -14,7 +15,7 @@ function Items({ currentItems }) {
           <div key={item._id} className="w-full hover:cursor-pointer">
             <Product
               _id={item.id}
-              img={`http://localhost:8080/api/product/images/${item.images[0]}`}
+              img={getProductImage(item.images[0])}
               title={item.title}
               price={item.price}
               rating={item.rating}
