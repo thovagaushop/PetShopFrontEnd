@@ -34,62 +34,106 @@ const Cart = () => {
   return (
     <div className="px-[100px]">
       <Breadcrumbs title="Cart" />
-
-      <div className="flex justify-between items-start gap-20">
-        <table className="cart-table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>PRODUCT</th>
-              <th>PRICE</th>
-              <th>QUANTITY</th>
-              <th>SUBTOTAL</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <img src={product1} alt="" width="100px" height="120px" />
-              </td>
-              <td className="text-[#666]">Small Bronze Chair</td>
-              <td className="text-[#666]">$262.45</td>
-              <td className="">
-                <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
-                  <i class="fas fa-minus"></i>
-                </button>
-                <span className="px-[20px] text-[20px]">1</span>
-                <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
-                  <i class="fas fa-plus"></i>
-                </button>
-              </td>
-              <td className="font-bold">$262.45</td>
-            </tr>
-            <tr>
-              <td>
-                <img src={product1} alt="" width="100px" height="120px" />
-              </td>
-              <td className="text-[#666]">Small Bronze Chair</td>
-              <td className="text-[#666]">$262.45</td>
-              <td className="">
-                <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
-                  <i class="fas fa-minus"></i>
-                </button>
-                <span className="px-[20px] text-[20px]">1</span>
-                <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
-                  <i class="fas fa-plus"></i>
-                </button>
-              </td>
-              <td className="font-bold">$262.45</td>
-            </tr>
-          </tbody>
-        </table>
-        <div className="w-[400px] h-[300px] border-[5px] border-[#E5E5E5]">
-          <div></div>
-          <div className="text-[30px] font-bold border-b-2 border-black flex justify-center w-[80%]">
-            Cart Total
+      {products.length > 0 ? (
+        <div className="flex justify-between items-start gap-20">
+          <table className="cart-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>PRODUCT</th>
+                <th>PRICE</th>
+                <th>QUANTITY</th>
+                <th>SUBTOTAL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <img src={product1} alt="" width="100px" height="120px" />
+                </td>
+                <td className="text-[#666]">Small Bronze Chair</td>
+                <td className="text-[#666]">$262.45</td>
+                <td className="">
+                  <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <span className="px-[20px] text-[20px]">1</span>
+                  <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </td>
+                <td className="font-bold">$262.45</td>
+              </tr>
+              <tr>
+                <td>
+                  <img src={product1} alt="" width="100px" height="120px" />
+                </td>
+                <td className="text-[#666]">Small Bronze Chair</td>
+                <td className="text-[#666]">$262.45</td>
+                <td className="">
+                  <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <span className="px-[20px] text-[20px]">1</span>
+                  <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </td>
+                <td className="font-bold">$262.45</td>
+              </tr>
+            </tbody>
+          </table>
+          <div className="w-[330px] h-[278px] border-[5px] border-[#E5E5E5]">
+            <div className="flex flex-col items-center">
+              <div className="text-[30px] font-bold border-b-2 border-black w-[80%] py-[8px]">
+                Cart Total
+              </div>
+              <div className="flex justify-between items-center gap-[20px] py-[12px] border-b-2 border-black w-[80%]">
+                <div className="text-[16px] font-bold-400">Subtotal</div>
+                <div className="font-bold text-[16px]">$ 1,246.44</div>
+              </div>
+              <div className="flex justify-between items-center gap-[20px] py-[12px] border-b-2 border-black w-[80%]">
+                <div className="text-[16px] font-bold-400">Total</div>
+                <div className="font-bold text-[26px] text-[var(--hover-color)]">
+                  $ 1,246.44
+                </div>
+              </div>
+              <button className="w-[80%] h-[40px] bg-[var(--hover-color)] text-white font-bold text-[16px] rounded-[50px] mt-[20px]">
+                Proceed to Checkout
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.4 }}
+          className="flex flex-col mdl:flex-row justify-center items-center gap-4 pb-20"
+        >
+          <div>
+            <img
+              className="w-80 rounded-lg p-4 mx-auto"
+              src={emptyCart}
+              alt="emptyCart"
+            />
+          </div>
+          <div className="max-w-[500px] p-4 py-8 bg-white flex gap-4 flex-col items-center rounded-md shadow-lg">
+            <h1 className="font-titleFont text-xl font-bold uppercase">
+              Your Cart feels lonely.
+            </h1>
+            <p className="text-sm text-center px-10 -mt-2">
+              Your Shopping cart lives to serve. Give it purpose - fill it with
+              books, electronics, videos, etc. and make it happy.
+            </p>
+            <Link to="/shop">
+              <button className="bg-primeColor rounded-md cursor-pointer hover:bg-black active:bg-gray-900 px-8 py-2 font-titleFont font-semibold text-lg text-gray-200 hover:text-white duration-300">
+                Continue Shopping
+              </button>
+            </Link>
+          </div>
+        </motion.div>
+      )}
 
       {/* {products.length > 0 ? (
         <div className="pb-20">

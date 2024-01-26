@@ -14,5 +14,6 @@ td {
 }
 
 .cart-table th {
+    padding: 20px 0px 20px 0px;
     border-top: 1px solid #ddd;
 }

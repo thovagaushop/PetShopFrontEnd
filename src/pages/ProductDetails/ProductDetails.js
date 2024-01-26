@@ -77,7 +77,7 @@ const ProductDetails = () => {
           _id: productInfo.id,
           name: productInfo.productName,
           quantity: quantity,
-          image: productInfo.img,
+          image: productInfo.images[0],
           badge: productInfo.badge,
           price: productInfo.price,
           colors: productInfo.color,
