@@ -6,6 +6,8 @@ import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import { resetCart } from "../../redux/orebiSlice";
 import { emptyCart } from "../../assets/images/index";
 import ItemCard from "./ItemCard";
+import { product1 } from "../../assets/images/index";
+import "./mainCart.css";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -30,9 +32,66 @@ const Cart = () => {
     }
   }, [totalAmt]);
   return (
-    <div className="max-w-container mx-auto px-4">
+    <div className="px-[100px]">
       <Breadcrumbs title="Cart" />
-      {products.length > 0 ? (
+
+      <div className="flex justify-between items-start gap-20">
+        <table className="cart-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>PRODUCT</th>
+              <th>PRICE</th>
+              <th>QUANTITY</th>
+              <th>SUBTOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <img src={product1} alt="" width="100px" height="120px" />
+              </td>
+              <td className="text-[#666]">Small Bronze Chair</td>
+              <td className="text-[#666]">$262.45</td>
+              <td className="">
+                <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <span className="px-[20px] text-[20px]">1</span>
+                <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </td>
+              <td className="font-bold">$262.45</td>
+            </tr>
+            <tr>
+              <td>
+                <img src={product1} alt="" width="100px" height="120px" />
+              </td>
+              <td className="text-[#666]">Small Bronze Chair</td>
+              <td className="text-[#666]">$262.45</td>
+              <td className="">
+                <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <span className="px-[20px] text-[20px]">1</span>
+                <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </td>
+              <td className="font-bold">$262.45</td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="w-[400px] h-[300px] border-[5px] border-[#E5E5E5]">
+          <div></div>
+          <div className="text-[30px] font-bold border-b-2 border-black flex justify-center w-[80%]">
+            Cart Total
+          </div>
+        </div>
+      </div>
+
+      {/* {products.length > 0 ? (
         <div className="pb-20">
           <div className="w-full h-20 bg-[#F5F7F7] text-primeColor hidden lgl:grid grid-cols-5 place-content-center px-6 text-lg font-titleFont font-semibold">
             <h2 className="col-span-2">Product</h2>
@@ -130,7 +189,7 @@ const Cart = () => {
             </Link>
           </div>
         </motion.div>
-      )}
+      )} */}
     </div>
   );
 };

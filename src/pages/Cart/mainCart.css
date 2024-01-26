@@ -1,0 +1,18 @@
+table.cart-table {
+
+    border-collapse: collapse;
+    width: 100%;
+
+}
+
+.cart-table th,
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.cart-table th {
+    border-top: 1px solid #ddd;
+}
