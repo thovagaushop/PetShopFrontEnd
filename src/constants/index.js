@@ -89,7 +89,7 @@ export const SplOfferData = [
 // =================== User data Start here ==============
 export const userData = {
   token:
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGdtYWlsLmNvbSIsImlhdCI6MTcwNjIwMjQ2MywiZXhwIjoxNzA2Mjg4ODYzfQ.uqD-Je0Fojrg5_C50NFxpTvtI23K18Za-luEw9coWXM",
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGdtYWlsLmNvbSIsImlhdCI6MTcwNjI4NzYyMiwiZXhwIjoxNzA2Mzc0MDIyfQ.4Cq38QbaPgAOOlirmdb8-seIWSis6uDtT8Sb-oqgQ6U",
   type: "Bearer",
   id: "6b99873f-974d-461c-913e-3755889f7612",
   email: "user@gmail.com",

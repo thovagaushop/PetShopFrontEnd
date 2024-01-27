@@ -8,6 +8,7 @@ import { emptyCart } from "../../assets/images/index";
 import ItemCard from "./ItemCard";
 import { product1 } from "../../assets/images/index";
 import "./mainCart.css";
+import { sumBy } from "lodash";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -47,40 +48,29 @@ const Cart = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <img src={product1} alt="" width="100px" height="120px" />
-                </td>
-                <td className="text-[#666]">Small Bronze Chair</td>
-                <td className="text-[#666]">$262.45</td>
-                <td className="">
-                  <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <span className="px-[20px] text-[20px]">1</span>
-                  <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                </td>
-                <td className="font-bold">$262.45</td>
-              </tr>
-              <tr>
-                <td>
-                  <img src={product1} alt="" width="100px" height="120px" />
-                </td>
-                <td className="text-[#666]">Small Bronze Chair</td>
-                <td className="text-[#666]">$262.45</td>
-                <td className="">
-                  <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <span className="px-[20px] text-[20px]">1</span>
-                  <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                </td>
-                <td className="font-bold">$262.45</td>
-              </tr>
+              {products.map((item) => (
+                <tr>
+                  <td>
+                    <img src={item.image} alt="" width="100px" height="120px" />
+                  </td>
+                  <td className="text-[#666]">{item.title}</td>
+                  <td className="text-[#666]">{item.price}</td>
+                  <td className="">
+                    <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <span className="px-[20px] text-[20px]">
+                      {item.quantity}
+                    </span>
+                    <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </td>
+                  <td className="font-bold">
+                    {Number(item.quantity) * Number(item.price)}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <div className="w-[330px] h-[278px] border-[5px] border-[#E5E5E5]">
@@ -90,12 +80,22 @@ const Cart = () => {
               </div>
               <div className="flex justify-between items-center gap-[20px] py-[12px] border-b-2 border-black w-[80%]">
                 <div className="text-[16px] font-bold-400">Subtotal</div>
-                <div className="font-bold text-[16px]">$ 1,246.44</div>
+                <div className="font-bold text-[16px]">
+                  ${" "}
+                  {sumBy(
+                    products,
+                    (item) => Number(item.quantity) * Number(item.price)
+                  )}
+                </div>
               </div>
               <div className="flex justify-between items-center gap-[20px] py-[12px] border-b-2 border-black w-[80%]">
                 <div className="text-[16px] font-bold-400">Total</div>
                 <div className="font-bold text-[26px] text-[var(--hover-color)]">
-                  $ 1,246.44
+                  ${" "}
+                  {sumBy(
+                    products,
+                    (item) => Number(item.quantity) * Number(item.price)
+                  )}
                 </div>
               </div>
               <button className="w-[80%] h-[40px] bg-[var(--hover-color)] text-white font-bold text-[16px] rounded-[50px] mt-[20px]">

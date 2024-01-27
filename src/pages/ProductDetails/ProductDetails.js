@@ -8,6 +8,7 @@ import instance from "../../api/axios";
 import { getProductImage } from "../../utils";
 import { addToCart } from "../../redux/orebiSlice";
 import { userData } from "../../constants";
+import { Alert, Snackbar } from "@mui/material";
 
 const ProductDetails = () => {
   const location = useLocation();
@@ -24,6 +25,13 @@ const ProductDetails = () => {
   });
   const [viewImage, setViewImage] = useState(null);
   const [quantity, setQuantity] = useState(0);
+  const [message, setMessage] = useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+    type: null,
+    content: "",
+  });
   const { _id } = useParams();
 
   const renderRatingIcons = (rating) => {
@@ -53,6 +61,10 @@ const ProductDetails = () => {
     setQuantity(quantity - 1);
   };
 
+  const handleCloseSnack = () => {
+    setMessage({ ...message, open: false });
+  };
+
   const handleAddToCart = async () => {
     if (quantity <= 0) return;
     const headers = {
@@ -71,7 +83,6 @@ const ProductDetails = () => {
           headers,
         }
       );
-      console.log("Add success");
       dispatch(
         addToCart({
           _id: productInfo.id,
@@ -83,7 +94,20 @@ const ProductDetails = () => {
           colors: productInfo.color,
         })
       );
-    } catch (error) {}
+      setMessage({
+        ...message,
+        open: true,
+        type: "success",
+        content: "Add product to cart successfully!!!",
+      });
+    } catch (error) {
+      setMessage({
+        ...message,
+        open: true,
+        type: "error",
+        content: error.response.data.message,
+      });
+    }
   };
 
   useEffect(() => {
@@ -108,6 +132,25 @@ const ProductDetails = () => {
   return (
     <div className="px-[100px]">
       <Breadcrumbs prevLocation={prevLocation} />
+      <Snackbar
+        anchorOrigin={{
+          vertical: message.vertical,
+          horizontal: message.horizontal,
+        }}
+        open={message.open}
+        onClose={handleCloseSnack}
+        message="I love snacks"
+        key={message.vertical + message.horizontal}
+      >
+        <Alert
+          onClose={handleCloseSnack}
+          severity={message.type}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {message.content}
+        </Alert>
+      </Snackbar>
       <div className="flex justify-around">
         <div className="w-[600px] flex flex-col justify-start items-center">
           <div className="w-[100%] h-[600px] flex justify-center items-center border border-[#F0F0F0] mb-4">
