@@ -33,7 +33,7 @@ const Brand = () => {
         onClick={() => setShowBrands(!showBrands)}
         className="cursor-pointer"
       >
-        <NavTitle title="Shop by Brand" icons={true} />
+        <NavTitle title="Filter by Brand" icons={false} />
       </div>
       {showBrands && (
         <motion.div

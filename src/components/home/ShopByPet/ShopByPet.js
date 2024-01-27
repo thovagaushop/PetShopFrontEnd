@@ -8,8 +8,14 @@ import {
   smallPet,
 } from "../../../assets/images";
 import "./shopByPet.css";
+import { useNavigate } from "react-router-dom";
 
 export default function ShopByPet() {
+  const navigate = useNavigate();
+  const handleClick = (e) => {
+    const petType = e.currentTarget.querySelector(".type-name").textContent;
+    navigate(`/shop?pet=${petType}`);
+  };
   return (
     <section className="shop-pet-type">
       <div className="pet-type-title">
@@ -28,12 +34,13 @@ export default function ShopByPet() {
         </div>
       </div>
       <div className="pet-type">
-        <div className="element">
+        <div className="element" onClick={handleClick}>
           <div className="content">
             <img src={dog} alt="" />
             <div style={{ marginLeft: 20 }}>
               <div
                 className="type-name"
+                id="senior-dog"
                 style={{ fontSize: 14, fontWeight: "bold" }}
               >
                 Senior Dog
@@ -47,15 +54,16 @@ export default function ShopByPet() {
             <i className="fa-solid fa-chevron-right"></i>
           </button>
         </div>
-        <div className="element">
+        <div className="element" onClick={handleClick}>
           <div className="content">
             <img src={cat} alt="" />
             <div style={{ marginLeft: 20 }}>
               <div
                 className="type-name"
+                id="cat"
                 style={{ fontSize: 14, fontWeight: "bold" }}
               >
-                Senior Dog
+                Cat
               </div>
               <div style={{ fontSize: 12, color: "var(--grey-bolder)" }}>
                 3 products
@@ -66,15 +74,16 @@ export default function ShopByPet() {
             <i className="fa-solid fa-chevron-right"></i>
           </button>
         </div>
-        <div className="element">
+        <div className="element" onClick={handleClick}>
           <div className="content">
             <img src={fish} alt="" />
             <div style={{ marginLeft: 20 }}>
               <div
                 className="type-name"
+                id="fish"
                 style={{ fontSize: 14, fontWeight: "bold" }}
               >
-                Senior Dog
+                Fish
               </div>
               <div style={{ fontSize: 12, color: "var(--grey-bolder)" }}>
                 3 products
@@ -85,12 +94,13 @@ export default function ShopByPet() {
             <i className="fa-solid fa-chevron-right"></i>
           </button>
         </div>
-        <div className="element">
+        <div className="element" onClick={handleClick}>
           <div className="content">
             <img src={smallPet} alt="" />
             <div style={{ marginLeft: 20 }}>
               <div
                 className="type-name"
+                id="small-pet"
                 style={{ fontSize: 14, fontWeight: "bold" }}
               >
                 Small Pet

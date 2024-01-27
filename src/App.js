@@ -24,7 +24,8 @@ import Shop from "./pages/Shop/Shop";
 import MainHeader from "./components/home/Header/MainHeader";
 import Navbar from "./components/home/Header/Navbar";
 import Auth from "./pages/Account/Auth";
-import { AuthProvider } from "./components/context/AuthContext";
+import { AuthProvider, useAuth } from "./components/context/AuthContext";
+import { useEffect } from "react";
 
 const Layout = () => {
   return (

@@ -1,0 +1,237 @@
+.homepage {
+    color: #999;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.cart {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-ratings { 
+    color: #ff782c; 
+    margin-right: 20px; 
+    font-size: 12px;
+}
+
+.buttons {
+    border: none;
+    background-color: white;
+}
+
+.divrightbuttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.divrightimg {
+    display: flex;
+    flex-direction: column;
+    margin-top: 60px;
+}
+
+.iconbuttons {
+    border: 0.5px solid grey;
+    background-color: white;
+    width: 40px;
+    height: 40px;
+    box-shadow: #999;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.imgtwo {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.pictureone {
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
+    border: 1px solid #FF782C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.picturetwo {
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
+    border: 1px solid #E5E5E5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.p {
+    margin-top: 20px 0px 40px 0px;
+    color: #666;
+    font-weight: 400;
+}
+
+.imgoneleft {
+    display: flex;
+    flex-direction: row;
+}
+
+.orange {
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
+    border: 1px solid #E5E5E5;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.textall {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.ok {
+    color: #FF782C;
+    font-weight: 400;
+    margin-bottom: 6px;
+}
+
+.small {
+    color: black;
+    font-weight: 400
+}
+
+.i {
+    display: flex;
+    flex-direction: row;
+}
+
+.zero {
+    color: #59585A;
+    font-size: 35px;
+    font-weight: 400;
+}
+
+.milk {
+    width: 59px;
+    height: 61px;
+    border-radius: 4px;
+    border: 1px solid #E5E5E5;
+    align-items: center;
+}
+
+.oktwo {
+    color: #FF782C;
+    font-weight: 400;
+    margin-bottom: 6px;
+}
+
+.bench {
+    color: black;
+    font-weight: 400
+}
+
+.addall {
+    width: 177px;
+    height: 44px;
+    border-radius: 50px;
+    background: #6839CC;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.wishlistchild {
+    display: flex;
+    align-items: center;
+}
+
+.textwishlist {
+    color: #666;
+    text-align: center;
+    font-weight: 400;
+    text-transform: capitalize;
+    font-size: 14px;
+}
+
+.textcompare {
+    color: #666;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.clothings {
+    color: #000;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 15px;
+}
+
+.phay {
+    width: 10px;
+    height: 10px;
+    margin-left: 10px;
+}
+
+.Crates {
+    color: #000;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.texttwo {
+    display: flex;
+    margin-top: 20px;
+}
+
+.Collection {
+    color: #000;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 10px;
+}
+
+.phaytwo {
+    color: #666;
+}
+
+.Puppy {
+    color: #000;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 10px;
+}
+
+.textthree {
+    display: flex;
+    margin-top: 20px;
+}
+
+.fb {
+    background-color: #1da1f2;
+    font-weight: 400;
+    margin: 0px 10px 0px 15px
+}
+
+.twitter {
+    background-color: #1da1f2;
+    font-weight: 400;
+    margin-right: 10px;
+}
+
+.pin {
+    background-color: red;
+}
