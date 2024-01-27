@@ -21,6 +21,8 @@ const ProductDetails = () => {
     sku: "",
     rating: 0,
     quantity: 0,
+    discount: 0,
+    speacialPrice: 0,
     images: null,
   });
   const [viewImage, setViewImage] = useState(null);
@@ -46,8 +48,6 @@ const ProductDetails = () => {
   };
 
   const handleClickImage = (image) => () => {
-    // console.log(e.target);
-    console.log(image);
     setViewImage(image);
   };
 
@@ -75,7 +75,6 @@ const ProductDetails = () => {
       const { data } = await instance.get(`/cart?email=${userData.email}`, {
         headers,
       });
-      console.log(data);
       await instance.post(
         `/cart/${data.cartId}/${productInfo.id}/quantity/${quantity}`,
         {},
@@ -89,9 +88,9 @@ const ProductDetails = () => {
           name: productInfo.productName,
           quantity: quantity,
           image: productInfo.images[0],
-          badge: productInfo.badge,
           price: productInfo.price,
-          colors: productInfo.color,
+          discount: productInfo.discount,
+          specialPrice: productInfo.specialPrice,
         })
       );
       setMessage({
@@ -127,7 +126,6 @@ const ProductDetails = () => {
     setPrevLocation("Shop");
     getProductById(_id);
   }, [location]);
-  console.log("Product Info", productInfo);
 
   return (
     <div className="px-[100px]">

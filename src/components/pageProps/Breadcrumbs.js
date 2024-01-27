@@ -3,7 +3,6 @@ import { HiOutlineChevronRight } from "react-icons/hi";
 import { Link, Navigate, useLocation } from "react-router-dom";
 
 const Breadcrumbs = ({ prevLocation }) => {
-  console.log(prevLocation);
   const location = useLocation();
   const [locationPath, setLocationPath] = useState("");
   useEffect(() => {

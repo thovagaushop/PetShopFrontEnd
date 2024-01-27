@@ -3,38 +3,100 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
-import { resetCart } from "../../redux/orebiSlice";
+import {
+  drecreaseQuantity,
+  increaseQuantity,
+  resetCart,
+} from "../../redux/orebiSlice";
 import { emptyCart } from "../../assets/images/index";
 import ItemCard from "./ItemCard";
 import { product1 } from "../../assets/images/index";
 import "./mainCart.css";
 import { sumBy } from "lodash";
+import instance from "../../api/axios";
+import { userData } from "../../constants";
+import { Alert, Snackbar } from "@mui/material";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.orebiReducer.products);
-  const [totalAmt, setTotalAmt] = useState("");
-  const [shippingCharge, setShippingCharge] = useState("");
-  useEffect(() => {
-    let price = 0;
-    products.map((item) => {
-      price += item.price * item.quantity;
-      return price;
-    });
-    setTotalAmt(price);
-  }, [products]);
-  useEffect(() => {
-    if (totalAmt <= 200) {
-      setShippingCharge(30);
-    } else if (totalAmt <= 400) {
-      setShippingCharge(25);
-    } else if (totalAmt > 401) {
-      setShippingCharge(20);
+  const [message, setMessage] = useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+    type: null,
+    content: "",
+  });
+
+  const handleCloseSnack = () => {
+    setMessage({ ...message, open: false });
+  };
+
+  const handleIncreaseQuantity = (item) => () => {
+    console.log("Increase");
+    dispatch(increaseQuantity({ _id: item._id }));
+  };
+
+  const handleDecreaseQuantity = (item) => () => {
+    dispatch(drecreaseQuantity({ _id: item._id }));
+  };
+
+  const handleUpdateQuantity = (item) => async () => {
+    const headers = {
+      Authorization: `Bearer ${userData.token}`,
+    };
+    try {
+      const { data } = await instance.get(`/cart?email=${userData.email}`, {
+        headers,
+      });
+      console.log(data);
+      await instance.put(
+        `/cart/${data.cartId}/${item._id}/quantity/${item.quantity}`,
+        {},
+        {
+          headers,
+        }
+      );
+      setMessage({
+        ...message,
+        open: true,
+        type: "success",
+        content: "Update successfully!!!",
+      });
+    } catch (error) {
+      setMessage({
+        ...message,
+        open: true,
+        type: "error",
+        content: error.response.data.message,
+      });
     }
-  }, [totalAmt]);
+  };
+
+  useEffect(() => {}, [products]);
   return (
     <div className="px-[100px]">
       <Breadcrumbs title="Cart" />
+      <Snackbar
+        anchorOrigin={{
+          vertical: message.vertical,
+          horizontal: message.horizontal,
+        }}
+        autoHideDuration={3000}
+        open={message.open}
+        onClose={handleCloseSnack}
+        message="I love snacks"
+        key={message.vertical + message.horizontal}
+      >
+        <Alert
+          onClose={handleCloseSnack}
+          severity={message.type}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {message.content}
+        </Alert>
+      </Snackbar>
       {products.length > 0 ? (
         <div className="flex justify-between items-start gap-20">
           <table className="cart-table">
@@ -43,7 +105,10 @@ const Cart = () => {
                 <th></th>
                 <th>PRODUCT</th>
                 <th>PRICE</th>
+                <th>DISCOUNT</th>
+                <th>SPECIAL_PRICE</th>
                 <th>QUANTITY</th>
+                <th>Action</th>
                 <th>SUBTOTAL</th>
               </tr>
             </thead>
@@ -55,19 +120,36 @@ const Cart = () => {
                   </td>
                   <td className="text-[#666]">{item.title}</td>
                   <td className="text-[#666]">{item.price}</td>
+
+                  <td className="font-bold">{item.discount}%</td>
+                  <td className="font-bold">{item.specialPrice}</td>
                   <td className="">
-                    <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                    <button
+                      className="w-[35px] h-[35px] shadow-md shadow-grey-500/50"
+                      onClick={handleDecreaseQuantity(item)}
+                    >
                       <i class="fas fa-minus"></i>
                     </button>
                     <span className="px-[20px] text-[20px]">
                       {item.quantity}
                     </span>
-                    <button className="w-[35px] h-[35px] shadow-md shadow-grey-500/50">
+                    <button
+                      className="w-[35px] h-[35px] shadow-md shadow-grey-500/50"
+                      onClick={handleIncreaseQuantity(item)}
+                    >
                       <i class="fas fa-plus"></i>
                     </button>
                   </td>
+                  <td>
+                    <button
+                      className="align-center text-white font-bold bg-[var(--violet-color)] py-[5px] px-[10px] rounded-[30px] hover:bg-[var(--hover-color)]"
+                      onClick={handleUpdateQuantity(item)}
+                    >
+                      Update Quantity
+                    </button>
+                  </td>
                   <td className="font-bold">
-                    {Number(item.quantity) * Number(item.price)}
+                    {Number(item.quantity) * Number(item.specialPrice)}
                   </td>
                 </tr>
               ))}
@@ -84,7 +166,7 @@ const Cart = () => {
                   ${" "}
                   {sumBy(
                     products,
-                    (item) => Number(item.quantity) * Number(item.price)
+                    (item) => Number(item.quantity) * Number(item.specialPrice)
                   )}
                 </div>
               </div>
@@ -94,7 +176,7 @@ const Cart = () => {
                   ${" "}
                   {sumBy(
                     products,
-                    (item) => Number(item.quantity) * Number(item.price)
+                    (item) => Number(item.quantity) * Number(item.specialPrice)
                   )}
                 </div>
               </div>
