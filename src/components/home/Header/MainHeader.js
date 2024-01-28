@@ -2,13 +2,29 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import "./index.css";
 import { logoMainHeader } from "../../../assets/images";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, Snackbar } from "@mui/material";
+import instance from "../../../api/axios";
+import { login } from "../../../redux/orebiSlice";
 
 export default function MainHeader() {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const formRef = useRef(null);
   const location = useLocation();
   const products = useSelector((state) => state.orebiReducer.products);
+  const [authInfo, setAuthInfo] = useState({
+    email: "",
+    password: "",
+  });
+  const [message, setMessage] = useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+    type: null,
+    content: "",
+  });
+  const user = useSelector((state) => state.orebiReducer.userInfo);
+  const dispatch = useDispatch();
 
   const handleShowLoginForm = () => {
     setShowLoginForm(!showLoginForm);
@@ -19,6 +35,35 @@ export default function MainHeader() {
       setShowLoginForm(false);
     }
   };
+
+  const handleCloseSnack = () => {
+    setMessage({ ...message, open: false });
+  };
+
+  const handleLogin = async () => {
+    try {
+      const { data } = await instance.post(`/auth/login`, authInfo, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      dispatch(login(data));
+      setMessage({
+        ...message,
+        open: true,
+        type: "success",
+        content: "Login successfully",
+      });
+    } catch (error) {
+      setMessage({
+        ...message,
+        open: true,
+        type: "error",
+        content: error.response.data.message,
+      });
+    }
+  };
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideForm);
     return () => {
@@ -27,6 +72,25 @@ export default function MainHeader() {
   }, []);
   return (
     <header>
+      <Snackbar
+        anchorOrigin={{
+          vertical: message.vertical,
+          horizontal: message.horizontal,
+        }}
+        open={message.open}
+        onClose={handleCloseSnack}
+        message="I love snacks"
+        key={message.vertical + message.horizontal}
+      >
+        <Alert
+          onClose={handleCloseSnack}
+          severity={message.type}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {message.content}
+        </Alert>
+      </Snackbar>
       <div className="top-header">
         <div className="top-header-element">
           <div className="service">
@@ -92,30 +156,48 @@ export default function MainHeader() {
             <i className="fa-solid fa-user" onClick={handleShowLoginForm}></i>
             {showLoginForm && (
               <div ref={formRef} className="dropdown-content">
-                <div class="account-inner">
-                  <div class="login-form-head">
-                    <div class="signin">Sign in</div>
-                    <NavLink to={"/auth"}>
-                      <a class="Create" href="">
-                        Create an Account
-                      </a>
+                {!user.token ? (
+                  <div class="account-inner">
+                    <div class="login-form-head">
+                      <div class="signin">Sign in</div>
+                      <NavLink to={"/auth"}>
+                        <span class="Create">Create an Account</span>
+                      </NavLink>
+                    </div>
+                    <form action="">
+                      <label for="">
+                        Username or email <span>*</span>
+                      </label>
+                      <input
+                        class="inputs"
+                        type="text"
+                        placeholder="Username"
+                        onChange={(e) =>
+                          setAuthInfo({ ...authInfo, email: e.target.value })
+                        }
+                      />
+                      <label for="">
+                        Password <span>*</span>
+                      </label>
+                      <input
+                        class="inputs"
+                        type="password"
+                        placeholder="Password"
+                        onChange={(e) =>
+                          setAuthInfo({ ...authInfo, password: e.target.value })
+                        }
+                      />
+                    </form>
+                    <button onClick={handleLogin}>LOGIN</button>
+                    <NavLink>
+                      <div class="lost" href="">
+                        Lost your password?
+                      </div>
                     </NavLink>
                   </div>
-                  <form action="">
-                    <label for="">
-                      Username or email <span>*</span>
-                    </label>
-                    <input class="inputs" type="text" placeholder="Username" />
-                    <label for="">
-                      Passwork <span>*</span>
-                    </label>
-                    <input class="inputs" type="text" placeholder="Passwork" />
-                  </form>
-                  <button>LOGIN</button>
-                  <a class="lost" href="">
-                    Lost your passwork?
-                  </a>
-                </div>
+                ) : (
+                  <div>Hello {user.email}</div>
+                )}
               </div>
             )}
           </div>
