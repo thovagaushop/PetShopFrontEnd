@@ -8,7 +8,7 @@ export default function Navbar() {
     <nav class="navbar">
       <div class="links">
         {navBarList.map((item) => (
-          <a href="" key={item._id}>
+          <div key={item._id}>
             <NavLink
               to={item.link}
               state={{ data: location.pathname.split("/")[1] }}
@@ -16,7 +16,7 @@ export default function Navbar() {
             >
               {item.title}
             </NavLink>
-          </a>
+          </div>
         ))}
       </div>
       <div class="navbar-support">

@@ -5,6 +5,7 @@ import {
   createRoutesFromElements,
   Route,
   ScrollRestoration,
+  useLocation,
 } from "react-router-dom";
 // import Footer from "./components/home/Footer/Footer";
 // import FooterBottom from "./components/home/Footer/FooterBottom";
@@ -26,6 +27,11 @@ import Navbar from "./components/home/Header/Navbar";
 import Auth from "./pages/Account/Auth";
 import { AuthProvider, useAuth } from "./components/context/AuthContext";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { parseJwt } from "./utils";
+import { logout } from "./redux/orebiSlice";
+import TakeCare from "./pages/Booking/TakeCare";
+import Examination from "./pages/Booking/Examination";
 
 const Layout = () => {
   return (
@@ -49,6 +55,8 @@ const router = createBrowserRouter(
         <Route path="/about" element={<About />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/journal" element={<Journal />}></Route>
+        <Route path="/take-care" element={<TakeCare />}></Route>
+        <Route path="/examination" element={<Examination />}></Route>
         {/* ==================== Header Navlink End here ===================== */}
         <Route path="/offer" element={<Offer />}></Route>
         <Route path="/product/:_id" element={<ProductDetails />}></Route>
@@ -63,6 +71,30 @@ const router = createBrowserRouter(
 );
 
 function App() {
+  const user = useSelector((state) => state.orebiReducer.userInfo);
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   const checkTokenExpiration = () => {
+  //     if (user.token) {
+  //       try {
+  //         const decodedJwt = parseJwt(user.token);
+  //         console.log(decodedJwt);
+
+  //         if (decodedJwt.exp * 1000 < Date.now()) {
+  //           dispatch(logout());
+  //         }
+  //       } catch (error) {
+  //         console.error("Error decoding JWT:", error);
+  //         // Handle error (e.g., logout user)
+  //         dispatch(logout());
+  //       }
+  //     }
+  //   };
+
+  //   checkTokenExpiration();
+  // }, [user, dispatch]);
+
   return (
     <div className="font-bodyFont">
       <AuthProvider>

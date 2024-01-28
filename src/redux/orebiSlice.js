@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  userInfo: [],
+  userInfo: {},
   products: [],
 };
 
@@ -45,6 +45,17 @@ export const orebiSlice = createSlice({
     resetCart: (state) => {
       state.products = [];
     },
+    login: (state, action) => {
+      state.userInfo = {
+        token: action.payload.token,
+        id: action.payload.id,
+        email: action.payload.email,
+        roles: action.payload.roles,
+      };
+    },
+    logout: (state) => {
+      state.userInfo = {};
+    },
   },
 });
 
@@ -54,5 +65,7 @@ export const {
   drecreaseQuantity,
   deleteItem,
   resetCart,
+  login,
+  logout,
 } = orebiSlice.actions;
 export default orebiSlice.reducer;

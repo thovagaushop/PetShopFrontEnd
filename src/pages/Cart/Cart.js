@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import {
+  deleteItem,
   drecreaseQuantity,
   increaseQuantity,
   resetCart,
@@ -12,14 +13,15 @@ import { emptyCart } from "../../assets/images/index";
 import ItemCard from "./ItemCard";
 import { product1 } from "../../assets/images/index";
 import "./mainCart.css";
-import { sumBy } from "lodash";
+import { round, sumBy, update } from "lodash";
 import instance from "../../api/axios";
 import { userData } from "../../constants";
 import { Alert, Snackbar } from "@mui/material";
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.orebiReducer.products);
+  // const products = useSelector((state) => state.orebiReducer.products);
+  const [products, setProducts] = useState([]);
   const [message, setMessage] = useState({
     open: false,
     vertical: "top",
@@ -28,17 +30,84 @@ const Cart = () => {
     content: "",
   });
 
+  const fetchCart = async () => {
+    const headers = {
+      Authorization: `Bearer ${userData.token}`,
+    };
+    try {
+      const { data } = await instance.get(`/cart?email=${userData.email}`, {
+        headers,
+      });
+      console.log(data);
+      const fetchProducts = data.products.map((item) => ({
+        ...item,
+        image: `http://localhost:8080/api/product/images/${item.image}`,
+      }));
+      setProducts(fetchProducts);
+    } catch (error) {
+      console.log(error);
+      setMessage({
+        ...message,
+        open: true,
+        type: "error",
+        content: error.response.data.message,
+      });
+    }
+  };
+
   const handleCloseSnack = () => {
     setMessage({ ...message, open: false });
   };
 
   const handleIncreaseQuantity = (item) => () => {
-    console.log("Increase");
-    dispatch(increaseQuantity({ _id: item._id }));
+    const updatedProducts = products.map((product) => {
+      if (product.productId === item.productId) {
+        return { ...product, quantity: product.quantity + 1 };
+      }
+      return product;
+    });
+    setProducts(updatedProducts);
   };
 
-  const handleDecreaseQuantity = (item) => () => {
-    dispatch(drecreaseQuantity({ _id: item._id }));
+  const handleDecreaseQuantity = (item) => async () => {
+    if (item.quantity > 1) {
+      const updatedProducts = products.map((product) => {
+        if (product.productId === item.productId) {
+          return { ...product, quantity: product.quantity - 1 };
+        }
+        return product;
+      });
+      setProducts(updatedProducts);
+    } else {
+      try {
+        const headers = {
+          Authorization: `Bearer ${userData.token}`,
+        };
+        const { data } = await instance.get(`/cart?email=${userData.email}`, {
+          headers,
+        });
+        // Delete product
+        await instance.delete(`/cart/${data.cartId}/${item.productId}`, {
+          headers,
+        });
+
+        dispatch(deleteItem(item.productId));
+        await fetchCart();
+        setMessage({
+          ...message,
+          open: true,
+          type: "success",
+          content: "Delete product from cart !!!",
+        });
+      } catch (error) {
+        setMessage({
+          ...message,
+          open: true,
+          type: "error",
+          content: error.response.data.message,
+        });
+      }
+    }
   };
 
   const handleUpdateQuantity = (item) => async () => {
@@ -51,7 +120,7 @@ const Cart = () => {
       });
       console.log(data);
       await instance.put(
-        `/cart/${data.cartId}/${item._id}/quantity/${item.quantity}`,
+        `/cart/${data.cartId}/${item.productId}/quantity/${item.quantity}`,
         {},
         {
           headers,
@@ -72,8 +141,11 @@ const Cart = () => {
       });
     }
   };
+  console.log(round(15001.539999999999, 2));
 
-  useEffect(() => {}, [products]);
+  useEffect(() => {
+    fetchCart();
+  }, []);
   return (
     <div className="px-[100px]">
       <Breadcrumbs title="Cart" />
@@ -104,9 +176,7 @@ const Cart = () => {
               <tr>
                 <th></th>
                 <th>PRODUCT</th>
-                <th>PRICE</th>
                 <th>DISCOUNT</th>
-                <th>SPECIAL_PRICE</th>
                 <th>QUANTITY</th>
                 <th>Action</th>
                 <th>SUBTOTAL</th>
@@ -114,15 +184,12 @@ const Cart = () => {
             </thead>
             <tbody>
               {products.map((item) => (
-                <tr>
+                <tr key={item.productId}>
                   <td>
                     <img src={item.image} alt="" width="100px" height="120px" />
                   </td>
-                  <td className="text-[#666]">{item.title}</td>
-                  <td className="text-[#666]">{item.price}</td>
-
+                  <td className="text-[#666]">{item.productTitle}</td>
                   <td className="font-bold">{item.discount}%</td>
-                  <td className="font-bold">{item.specialPrice}</td>
                   <td className="">
                     <button
                       className="w-[35px] h-[35px] shadow-md shadow-grey-500/50"
@@ -149,7 +216,10 @@ const Cart = () => {
                     </button>
                   </td>
                   <td className="font-bold">
-                    {Number(item.quantity) * Number(item.specialPrice)}
+                    {round(
+                      Number(item.quantity) * Number(item.productSpecialPrice),
+                      2
+                    )}
                   </td>
                 </tr>
               ))}
@@ -164,9 +234,11 @@ const Cart = () => {
                 <div className="text-[16px] font-bold-400">Subtotal</div>
                 <div className="font-bold text-[16px]">
                   ${" "}
-                  {sumBy(
-                    products,
-                    (item) => Number(item.quantity) * Number(item.specialPrice)
+                  {sumBy(products, (item) =>
+                    round(
+                      Number(item.quantity) * Number(item.productSpecialPrice),
+                      2
+                    )
                   )}
                 </div>
               </div>
@@ -174,9 +246,11 @@ const Cart = () => {
                 <div className="text-[16px] font-bold-400">Total</div>
                 <div className="font-bold text-[26px] text-[var(--hover-color)]">
                   ${" "}
-                  {sumBy(
-                    products,
-                    (item) => Number(item.quantity) * Number(item.specialPrice)
+                  {sumBy(products, (item) =>
+                    round(
+                      Number(item.quantity) * Number(item.productSpecialPrice),
+                      2
+                    )
                   )}
                 </div>
               </div>
@@ -227,7 +301,7 @@ const Cart = () => {
           </div>
           <div className="mt-5">
             {products.map((item) => (
-              <div key={item._id}>
+              <div key={item.productId}>
                 <ItemCard item={item} />
               </div>
             ))}
