@@ -3,23 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
-import {
-  deleteItem,
-  drecreaseQuantity,
-  increaseQuantity,
-  resetCart,
-} from "../../redux/orebiSlice";
+import { deleteItem } from "../../redux/orebiSlice";
 import { emptyCart } from "../../assets/images/index";
-import ItemCard from "./ItemCard";
-import { product1 } from "../../assets/images/index";
 import "./mainCart.css";
-import { round, sumBy, update } from "lodash";
+import { round, sumBy } from "lodash";
 import instance from "../../api/axios";
-import { userData } from "../../constants";
 import { Alert, Snackbar } from "@mui/material";
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state.orebiReducer.userInfo);
   // const products = useSelector((state) => state.orebiReducer.products);
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState({

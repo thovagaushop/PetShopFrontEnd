@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { isNil } from "lodash";
 import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import "./productDetail.css";
 import instance from "../../api/axios";
 import { getProductImage } from "../../utils";
 import { addToCart } from "../../redux/orebiSlice";
-import { userData } from "../../constants";
 import { Alert, Snackbar } from "@mui/material";
 
 const ProductDetails = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state.orebiReducer.userInfo);
   const [prevLocation, setPrevLocation] = useState("");
   const [productInfo, setProductInfo] = useState({
     title: "",
