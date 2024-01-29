@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Snackbar } from "@mui/material";
 import instance from "../../../api/axios";
-import { login } from "../../../redux/orebiSlice";
+import { login, logout } from "../../../redux/orebiSlice";
 
 export default function MainHeader() {
   const [showLoginForm, setShowLoginForm] = useState(false);
@@ -64,6 +64,15 @@ export default function MainHeader() {
     }
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    setMessage({
+      ...message,
+      open: true,
+      type: "success",
+      content: "Logout successfully",
+    });
+  };
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideForm);
     return () => {
@@ -157,11 +166,11 @@ export default function MainHeader() {
             {showLoginForm && (
               <div ref={formRef} className="dropdown-content">
                 {!user.token ? (
-                  <div class="account-inner">
-                    <div class="login-form-head">
-                      <div class="signin">Sign in</div>
+                  <div className="account-inner">
+                    <div className="login-form-head">
+                      <div className="signin">Sign in</div>
                       <NavLink to={"/auth"}>
-                        <span class="Create">Create an Account</span>
+                        <span className="Create">Create an Account</span>
                       </NavLink>
                     </div>
                     <form action="">
@@ -169,7 +178,7 @@ export default function MainHeader() {
                         Username or email <span>*</span>
                       </label>
                       <input
-                        class="inputs"
+                        className="inputs"
                         type="text"
                         placeholder="Username"
                         onChange={(e) =>
@@ -180,7 +189,7 @@ export default function MainHeader() {
                         Password <span>*</span>
                       </label>
                       <input
-                        class="inputs"
+                        className="inputs"
                         type="password"
                         placeholder="Password"
                         onChange={(e) =>
@@ -190,13 +199,27 @@ export default function MainHeader() {
                     </form>
                     <button onClick={handleLogin}>LOGIN</button>
                     <NavLink>
-                      <div class="lost" href="">
+                      <div className="lost" href="">
                         Lost your password?
                       </div>
                     </NavLink>
                   </div>
                 ) : (
-                  <div>Hello {user.email}</div>
+                  <div className="account-inner flex flex-col items-center gap-5">
+                    <div>Hello {user.email}</div>
+                    <hr className="w-[80px]" />
+                    <div className="w-[100%] py-[5px] flex justify-around hover:bg-[var(--hover-color)] hover:text-white hover:cursor-pointer">
+                      <div>Profile</div>
+                      <i className="fa-regular fa-address-card"></i>
+                    </div>
+                    <div
+                      className="w-[100%] py-[5px] flex justify-around hover:bg-[var(--hover-color)] hover:text-white hover:cursor-pointer"
+                      onClick={handleLogout}
+                    >
+                      <div>Logout</div>
+                      <i className="fa-solid fa-right-from-bracket"></i>
+                    </div>
+                  </div>
                 )}
               </div>
             )}

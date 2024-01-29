@@ -74,26 +74,26 @@ function App() {
   const user = useSelector((state) => state.orebiReducer.userInfo);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const checkTokenExpiration = () => {
-  //     if (user.token) {
-  //       try {
-  //         const decodedJwt = parseJwt(user.token);
-  //         console.log(decodedJwt);
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      if (user.token) {
+        try {
+          const decodedJwt = parseJwt(user.token);
+          console.log(decodedJwt);
 
-  //         if (decodedJwt.exp * 1000 < Date.now()) {
-  //           dispatch(logout());
-  //         }
-  //       } catch (error) {
-  //         console.error("Error decoding JWT:", error);
-  //         // Handle error (e.g., logout user)
-  //         dispatch(logout());
-  //       }
-  //     }
-  //   };
+          if (decodedJwt.exp * 1000 < Date.now()) {
+            dispatch(logout());
+          }
+        } catch (error) {
+          console.error("Error decoding JWT:", error);
+          // Handle error (e.g., logout user)
+          dispatch(logout());
+        }
+      }
+    };
 
-  //   checkTokenExpiration();
-  // }, [user, dispatch]);
+    checkTokenExpiration();
+  }, [user, dispatch]);
 
   return (
     <div className="font-bodyFont">
