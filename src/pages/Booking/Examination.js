@@ -54,7 +54,7 @@ export default function Examination() {
           Authorization: `Bearer ${userInfo.token}`,
         },
       });
-      fetchBookings();
+      await fetchBookings();
       setMessage({
         ...message,
         open: true,
@@ -140,7 +140,7 @@ export default function Examination() {
             Form booking an examination
           </div>
           <form
-            className="mt-[30px] w-[80%] text-[20px] flex flex-col"
+            className="mt-[30px] w-[80%] text-[16px] flex flex-col"
             onSubmit={handleSubmit}
           >
             <label for="date" className="my-[20px]">
@@ -206,16 +206,16 @@ export default function Examination() {
             </thead>
             <tbody>
               {bookings.length > 0 &&
-                bookings.map((booking, index) => (
+                bookings.map((item, index) => (
                   <tr>
                     <td>{index}</td>
-                    <td>{moment(booking.date).format("YYYY-MM-DD")}</td>
-                    <td>{moment(booking.date).format("HH:mm")}</td>
-                    <td>{booking.description}</td>
+                    <td>{moment(item.date).format("YYYY-MM-DD")}</td>
+                    <td>{moment(item.date).format("HH:mm")}</td>
+                    <td>{item.description}</td>
                     <td>
                       <button
                         className="bg-[var(--violet-color)] px-[10px] py-[5px] rounded-[50px] text-white hover:bg-[var(--hover-color)]"
-                        onClick={handleDelete(booking.id)}
+                        onClick={handleDelete(item.id)}
                       >
                         Delete
                       </button>

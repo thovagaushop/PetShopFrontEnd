@@ -32,6 +32,8 @@ import { parseJwt } from "./utils";
 import { logout } from "./redux/orebiSlice";
 import TakeCare from "./pages/Booking/TakeCare";
 import Examination from "./pages/Booking/Examination";
+import Profile from "./pages/Profile/Profile";
+import LostPassword from "./pages/Profile/LostPassword";
 
 const Layout = () => {
   return (
@@ -57,11 +59,13 @@ const router = createBrowserRouter(
         <Route path="/journal" element={<Journal />}></Route>
         <Route path="/take-care" element={<TakeCare />}></Route>
         <Route path="/examination" element={<Examination />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
         {/* ==================== Header Navlink End here ===================== */}
         <Route path="/offer" element={<Offer />}></Route>
         <Route path="/product/:_id" element={<ProductDetails />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/paymentgateway" element={<Payment />}></Route>
+        <Route path="/lost-password" element={<LostPassword />}></Route>
       </Route>
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="/signin" element={<SignIn />}></Route>
