@@ -76,7 +76,7 @@ export default function TakeCare() {
     try {
       await instance.post(
         `take-care-bookings`,
-        { ...booking, email: userInfo.email },
+        { ...booking },
         {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,
