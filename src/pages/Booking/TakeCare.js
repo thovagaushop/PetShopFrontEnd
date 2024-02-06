@@ -90,6 +90,13 @@ export default function TakeCare() {
         type: "success",
         content: "Booking successfully",
       });
+      setBooking({
+        startDate: "",
+        endDate: "",
+        note: "",
+        petType: "",
+        note: "",
+      });
     } catch (error) {
       setMessage({
         ...message,
@@ -98,13 +105,6 @@ export default function TakeCare() {
         content: error.response.data.message,
       });
     }
-    setBooking({
-      startDate: "",
-      endDate: "",
-      note: "",
-      petType: "",
-      note: "",
-    });
   };
 
   useEffect(() => {
