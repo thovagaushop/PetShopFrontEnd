@@ -96,6 +96,7 @@ export default function Auth() {
           vertical: message.vertical,
           horizontal: message.horizontal,
         }}
+        autoHideDuration={3000}
         open={message.open}
         onClose={handleCloseSnack}
         message="I love snacks"

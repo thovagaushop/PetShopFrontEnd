@@ -87,6 +87,7 @@ export default function Profile() {
           vertical: message.vertical,
           horizontal: message.horizontal,
         }}
+        autoHideDuration={3000}
         open={message.open}
         onClose={handleCloseSnack}
         message="I love snacks"

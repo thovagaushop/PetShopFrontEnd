@@ -34,6 +34,7 @@ import TakeCare from "./pages/Booking/TakeCare";
 import Examination from "./pages/Booking/Examination";
 import Profile from "./pages/Profile/Profile";
 import LostPassword from "./pages/Profile/LostPassword";
+import Checkout from "./pages/Checkout/Checkout";
 
 const Layout = () => {
   return (
@@ -66,6 +67,7 @@ const router = createBrowserRouter(
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/paymentgateway" element={<Payment />}></Route>
         <Route path="/lost-password" element={<LostPassword />}></Route>
+        <Route path="/checkout" element={<Checkout />}></Route>
       </Route>
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="/signin" element={<SignIn />}></Route>

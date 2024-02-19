@@ -1,0 +1,93 @@
+import {
+  PayPalButtons,
+  PayPalScriptProvider,
+  usePayPalScriptReducer,
+} from "@paypal/react-paypal-js";
+import React from "react";
+
+const style = { layout: "vertical" };
+
+function createOrder() {
+  // replace this url with your server
+  return fetch(
+    // "https://react-paypal-js-storybook.fly.dev/api/paypal/create-order",
+    "http://localhost:8080/api/paypal/init",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // use the "body" param to optionally pass additional order information
+      // like product ids and quantities
+      body: JSON.stringify({
+        // cart: [
+        //   {
+        //     sku: "1blwyeo8",
+        //     quantity: 2,
+        //   },
+        // ],
+        total: 300.0,
+      }),
+    }
+  )
+    .then((response) => response.json())
+    .then((order) => {
+      // Your code here after create the order
+      return order.id;
+    });
+}
+function onApprove(data) {
+  // replace this url with your server
+  return fetch(
+    // "https://react-paypal-js-storybook.fly.dev/api/paypal/capture-order",
+    "http://localhost:8080/api/paypal/capture",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderID: data.orderID,
+      }),
+    }
+  )
+    .then((response) => response.json())
+    .then((orderData) => {
+      // Your code here after capture the order
+    });
+}
+
+const ButtonWrapper = ({ showSpinner }) => {
+  const [{ isPending }] = usePayPalScriptReducer();
+
+  return (
+    <>
+      {showSpinner && isPending && <div className="spinner" />}
+      <PayPalButtons
+        style={style}
+        disabled={false}
+        forceReRender={[style]}
+        fundingSource={undefined}
+        createOrder={createOrder}
+        onApprove={onApprove}
+      />
+    </>
+  );
+};
+
+export default function Checkout() {
+  return (
+    <div style={{ maxWidth: "750px", minHeight: "200px" }}>
+      <PayPalScriptProvider
+        options={{
+          clientId:
+            "AVwcw0eLPB9IBe0MzQxXeBkwF7nSvxYAuUHst18DIyNipw7RFC8dzIndE4eNugKohwHZs03kNQfaL4c-",
+          components: "buttons",
+          currency: "USD",
+        }}
+      >
+        <ButtonWrapper showSpinner={false} />
+      </PayPalScriptProvider>
+    </div>
+  );
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // import { FaPlus } from "react-icons/fa";
-import { ImPlus } from "react-icons/im";
+// import { ImPlus } from "react-icons/im";
 import NavTitle from "./NavTitle";
 import instance from "../../../../api/axios.js";
 import { dogFoot } from "../../../../assets/images";
@@ -8,7 +8,7 @@ import "./category.css";
 import { useSearchParams } from "react-router-dom";
 
 const Category = () => {
-  const [showSubCatOne, setShowSubCatOne] = useState(false);
+  // const [showSubCatOne, setShowSubCatOne] = useState(false);
   const [items, setItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const handleClickCategory = (category) => () => {
