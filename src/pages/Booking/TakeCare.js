@@ -23,14 +23,11 @@ export default function TakeCare() {
 
   const fetchBookings = async () => {
     try {
-      const { data } = await instance.get(
-        `take-care-bookings?email=${userInfo.email}`,
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
+      const { data } = await instance.get(`take-care-bookings`, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
       setBookings(data);
     } catch (error) {
       setMessage({

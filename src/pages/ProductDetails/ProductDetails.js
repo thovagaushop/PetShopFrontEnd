@@ -72,7 +72,7 @@ const ProductDetails = () => {
     };
     // Call api
     try {
-      const { data } = await instance.get(`/cart?email=${userData.email}`, {
+      const { data } = await instance.get(`/cart`, {
         headers,
       });
       await instance.post(

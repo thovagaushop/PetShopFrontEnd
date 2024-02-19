@@ -28,7 +28,7 @@ const Cart = () => {
       Authorization: `Bearer ${userData.token}`,
     };
     try {
-      const { data } = await instance.get(`/cart?email=${userData.email}`, {
+      const { data } = await instance.get(`/cart`, {
         headers,
       });
       console.log(data);
@@ -76,7 +76,7 @@ const Cart = () => {
         const headers = {
           Authorization: `Bearer ${userData.token}`,
         };
-        const { data } = await instance.get(`/cart?email=${userData.email}`, {
+        const { data } = await instance.get(`/cart`, {
           headers,
         });
         // Delete product
@@ -108,7 +108,7 @@ const Cart = () => {
       Authorization: `Bearer ${userData.token}`,
     };
     try {
-      const { data } = await instance.get(`/cart?email=${userData.email}`, {
+      const { data } = await instance.get(`/cart`, {
         headers,
       });
       console.log(data);
@@ -247,9 +247,11 @@ const Cart = () => {
                   )}
                 </div>
               </div>
-              <button className="w-[80%] h-[40px] bg-[var(--hover-color)] text-white font-bold text-[16px] rounded-[50px] mt-[20px]">
-                Proceed to Checkout
-              </button>
+              <Link to="/checkout" className="w-[80%] h-[40px]">
+                <button className="w-full h-full bg-[var(--hover-color)] text-white font-bold text-[16px] rounded-[50px] mt-[20px]">
+                  Proceed to Checkout
+                </button>
+              </Link>
             </div>
           </div>
         </div>

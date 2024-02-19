@@ -26,11 +26,12 @@ export default function Profile() {
 
   const fetchUserProfile = async () => {
     try {
-      const { data } = await instance.get(`users/${userInfo.id}`, {
+      const { data } = await instance.get(`/users/profile`, {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },
       });
+      console.log(data);
       setUser(data);
     } catch (error) {
       setMessage({
@@ -45,7 +46,7 @@ export default function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await instance.put(`users/${userInfo.id}`, user, {
+      await instance.put(`/users/profile`, user, {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },
@@ -168,7 +169,7 @@ export default function Profile() {
 
           <label for="date" className="my-[20px]">
             {" "}
-            First name:{" "}
+            Address:{" "}
           </label>
           <input
             onChange={(e) => setUser({ ...user, address: e.target.value })}
@@ -196,7 +197,7 @@ export default function Profile() {
           <input
             className="mt-[30px] bg-[var(--violet-color)] rounded-[50px] text-white py-[10px] px-[20px] outline-none cursor-pointer hover:bg-[var(--hover-color)]"
             type="submit"
-            value="Booking"
+            value="Confirm"
           />
         </form>
       </div>
