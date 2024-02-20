@@ -39,30 +39,6 @@ export default function TakeCare() {
     }
   };
 
-  const handleDelete = (id) => async () => {
-    try {
-      await instance.delete(`take-care-bookings/${id}`, {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      });
-      await fetchBookings();
-      setMessage({
-        ...message,
-        open: true,
-        type: "success",
-        content: "Delete successfully",
-      });
-    } catch (error) {
-      setMessage({
-        ...message,
-        open: true,
-        type: "error",
-        content: error.response.data.message,
-      });
-    }
-  };
-
   const handleCloseSnack = () => {
     setMessage({ ...message, open: false });
   };
@@ -104,9 +80,6 @@ export default function TakeCare() {
     }
   };
 
-  useEffect(() => {
-    fetchBookings();
-  }, []);
   return (
     <div className="px-[100px]">
       <Breadcrumbs />
@@ -130,7 +103,7 @@ export default function TakeCare() {
           {message.content}
         </Alert>
       </Snackbar>
-      <div className="flex justify-around items-center gap-10">
+      <div className="flex justify-center items-center gap-10">
         <div className="mt-[100px] w-[50%] h-[700px] border-[5px] border-[var(--grey-background-header)] flex flex-col justify-start items-center">
           <div className="font-bold text-[32px] mt-3 text-[var(--hover-color)]">
             Form booking an examination
@@ -220,42 +193,6 @@ export default function TakeCare() {
               value="Booking"
             />
           </form>
-        </div>
-        <div className="flex justify-center items-start w-[50%] mt-[100px] h-[700px]">
-          <table className="w-[100%]">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Pet Type</th>
-                <th>Note</th>
-                <th>Price</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.length > 0 &&
-                bookings.map((item, index) => (
-                  <tr>
-                    <td>{index}</td>
-                    <td>{moment(item.startDate).format("YYYY-MM-DD")}</td>
-                    <td>{moment(item.endDate).format("YYYY-MM-DD")}</td>
-                    <td>{item.petType}</td>
-                    <td>{item.note}</td>
-                    <td>$ {item.price}</td>
-                    <td>
-                      <button
-                        className="bg-[var(--violet-color)] px-[10px] py-[5px] rounded-[50px] text-white hover:bg-[var(--hover-color)]"
-                        onClick={handleDelete(item.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
         </div>
       </div>
     </div>

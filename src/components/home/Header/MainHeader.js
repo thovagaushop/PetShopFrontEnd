@@ -249,6 +249,13 @@ export default function MainHeader() {
                     </div>
                     <div
                       className="w-[100%] py-[5px] flex justify-around hover:bg-[var(--hover-color)] hover:text-white hover:cursor-pointer"
+                      onClick={() => navigate("/my-order")}
+                    >
+                      <div className="pr-2">My Order </div>
+                      <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <div
+                      className="w-[100%] py-[5px] flex justify-around hover:bg-[var(--hover-color)] hover:text-white hover:cursor-pointer"
                       onClick={() => navigate("/my-examination")}
                     >
                       <div className="pr-2">Examination Booking </div>

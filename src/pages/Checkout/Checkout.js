@@ -10,18 +10,14 @@ import { Alert, Snackbar } from "@mui/material";
 import instance from "../../api/axios";
 import { getProductImage } from "../../utils";
 import { round, sumBy } from "lodash";
+import { resetCart } from "../../redux/orebiSlice";
 
 const style = { layout: "vertical" };
 
 function createOrder(data) {
-  // replace this url with your server
   const bodyData = {
-    total: sumBy(
-      data,
-      (item) =>
-        round(Number(item.quantity) * Number(item.productSpecialPrice), 2),
-      data
-    ),
+    total: data.totalPrice,
+    address: data.address,
   };
   return fetch(
     // "https://react-paypal-js-storybook.fly.dev/api/paypal/create-order",
@@ -30,6 +26,7 @@ function createOrder(data) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${data.token}`,
       },
       // use the "body" param to optionally pass additional order information
       // like product ids and quantities
@@ -59,8 +56,9 @@ function onApprove(data) {
   )
     .then((response) => response.json())
     .then((orderData) => {
+      window.location.href = orderData.redirectLink;
       // Your code here after capture the order
-      console.log("Successfully captured order");
+      // window.location.href = "http";
     });
 }
 
@@ -75,7 +73,7 @@ const ButtonWrapper = ({ showSpinner, data }) => {
         disabled={false}
         forceReRender={[style]}
         fundingSource={undefined}
-        createOrder={createOrder(data)}
+        createOrder={() => createOrder(data)}
         onApprove={onApprove}
       />
     </>
@@ -85,9 +83,12 @@ const ButtonWrapper = ({ showSpinner, data }) => {
 export default function Checkout() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.orebiReducer.userInfo);
-  const [user, setUser] = useState(null);
+  const [address, setAddress] = useState("");
   const [usePayPal, setUsePayPal] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState({
+    totalPrice: 0,
+    products: [],
+  });
   const [message, setMessage] = useState({
     open: false,
     vertical: "top",
@@ -104,7 +105,7 @@ export default function Checkout() {
       const { data } = await instance.get(`/users/profile`, {
         headers: { Authorization: `Bearer ${userData.token}` },
       });
-      setUser(data);
+      setAddress(data.address);
     } catch (error) {
       setMessage({
         ...message,
@@ -123,12 +124,43 @@ export default function Checkout() {
       const { data } = await instance.get(`/cart`, {
         headers,
       });
-      console.log(data);
       const fetchProducts = data.products.map((item) => ({
         ...item,
         image: getProductImage(item.image),
       }));
-      setProducts(fetchProducts);
+      setCart({ totalPrice: data.totalPrice, products: fetchProducts });
+    } catch (error) {
+      console.log(error);
+      setMessage({
+        ...message,
+        open: true,
+        type: "error",
+        content: error.response.data.message,
+      });
+    }
+  };
+
+  const handlePlaceOrder = async () => {
+    try {
+      await instance.post(
+        "/orders",
+        {
+          userAddress: address,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
+      );
+      setMessage({
+        ...message,
+        open: true,
+        type: "success",
+        content: "Order successfully",
+      });
+      dispatch(resetCart());
+      await fetchCart();
     } catch (error) {
       console.log(error);
       setMessage({
@@ -179,7 +211,9 @@ export default function Checkout() {
               id="address"
               placeholder="Type in your address"
               className="w-[100%] outline-none"
-              value={user ? user.address : ""}
+              value={address || ""}
+              onChange={(e) => setAddress(e.target.value)}
+              required
             />
             <div
               class="relative text-white w-[24px] h-[24px] text-center bg-[var(--violet-color)] hover:cursor-pointer hover:bg-[var(--hover-color)]"
@@ -213,8 +247,8 @@ export default function Checkout() {
                   </tr>
                 </thead>
                 <tbody className="text-[var(--grey-bolder)]">
-                  {products.length > 0 &&
-                    products.map((item, index) => (
+                  {cart.products.length > 0 &&
+                    cart.products.map((item, index) => (
                       <tr className="flex justify-around" key={item.productId}>
                         <td>
                           {item.productTitle} x {item.quantity}
@@ -229,13 +263,7 @@ export default function Checkout() {
             <div className="flex justify-between items-center gap-[20px] py-[12px] border-b-2 border-black w-[80%]">
               <div className="text-[16px] font-bold-400">Total</div>
               <div className="font-bold text-[26px] text-[var(--hover-color)]">
-                ${" "}
-                {sumBy(products, (item) =>
-                  round(
-                    Number(item.quantity) * Number(item.productSpecialPrice),
-                    2
-                  )
-                )}
+                $ {cart.totalPrice}
               </div>
             </div>
             {usePayPal ? (
@@ -248,12 +276,18 @@ export default function Checkout() {
                     currency: "USD",
                   }}
                 >
-                  <ButtonWrapper showSpinner={false} data={products} />
+                  <ButtonWrapper
+                    showSpinner={false}
+                    data={{ ...cart, address, token: userData.token }}
+                  />
                 </PayPalScriptProvider>
               </div>
             ) : (
-              <button className="w-[80%] h-[40px] mb-10 bg-[var(--hover-color)] text-white font-bold text-[16px] rounded-[50px] mt-[20px]">
-                Proceed to Checkout
+              <button
+                className="w-[80%] h-[40px] mb-10 bg-[var(--hover-color)] text-white font-bold text-[16px] rounded-[50px] mt-[20px]"
+                onClick={handlePlaceOrder}
+              >
+                Order
               </button>
             )}
           </div>
