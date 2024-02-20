@@ -90,7 +90,7 @@ export default function MainHeader() {
       }
       try {
         console.log(userInfo);
-        const { data } = await instance.get(`/cart?email=${userInfo.email}`, {
+        const { data } = await instance.get(`/cart`, {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,
           },
@@ -117,6 +117,7 @@ export default function MainHeader() {
           vertical: message.vertical,
           horizontal: message.horizontal,
         }}
+        autoHideDuration={3000}
         open={message.open}
         onClose={handleCloseSnack}
         message="I love snacks"
@@ -245,6 +246,27 @@ export default function MainHeader() {
                     >
                       <div>Profile</div>
                       <i className="fa-regular fa-address-card"></i>
+                    </div>
+                    <div
+                      className="w-[100%] py-[5px] flex justify-around hover:bg-[var(--hover-color)] hover:text-white hover:cursor-pointer"
+                      onClick={() => navigate("/my-order")}
+                    >
+                      <div className="pr-2">My Order </div>
+                      <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <div
+                      className="w-[100%] py-[5px] flex justify-around hover:bg-[var(--hover-color)] hover:text-white hover:cursor-pointer"
+                      onClick={() => navigate("/my-examination")}
+                    >
+                      <div className="pr-2">Examination Booking </div>
+                      <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <div
+                      className="w-[100%] py-[5px] flex justify-around hover:bg-[var(--hover-color)] hover:text-white hover:cursor-pointer"
+                      onClick={() => navigate("/my-take-care")}
+                    >
+                      <div className="pr-2">Take Care Booking </div>
+                      <i class="fa-solid fa-list-check"></i>
                     </div>
                     <div
                       className="w-[100%] py-[5px] flex justify-around hover:bg-[var(--hover-color)] hover:text-white hover:cursor-pointer"

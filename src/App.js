@@ -34,6 +34,10 @@ import TakeCare from "./pages/Booking/TakeCare";
 import Examination from "./pages/Booking/Examination";
 import Profile from "./pages/Profile/Profile";
 import LostPassword from "./pages/Profile/LostPassword";
+import Checkout from "./pages/Checkout/Checkout";
+import MyTakeCare from "./pages/Booking/MyTakeCare";
+import MyExamination from "./pages/Booking/MyExamination";
+import MyOrder from "./pages/Order/MyOrder";
 
 const Layout = () => {
   return (
@@ -66,6 +70,10 @@ const router = createBrowserRouter(
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/paymentgateway" element={<Payment />}></Route>
         <Route path="/lost-password" element={<LostPassword />}></Route>
+        <Route path="/checkout" element={<Checkout />}></Route>
+        <Route path="/my-take-care" element={<MyTakeCare />}></Route>
+        <Route path="/my-examination" element={<MyExamination />}></Route>
+        <Route path="/my-order" element={<MyOrder />}></Route>
       </Route>
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="/signin" element={<SignIn />}></Route>

@@ -72,7 +72,7 @@ const ProductDetails = () => {
     };
     // Call api
     try {
-      const { data } = await instance.get(`/cart?email=${userData.email}`, {
+      const { data } = await instance.get(`/cart`, {
         headers,
       });
       await instance.post(
@@ -135,6 +135,7 @@ const ProductDetails = () => {
           vertical: message.vertical,
           horizontal: message.horizontal,
         }}
+        autoHideDuration={3000}
         open={message.open}
         onClose={handleCloseSnack}
         message="I love snacks"
