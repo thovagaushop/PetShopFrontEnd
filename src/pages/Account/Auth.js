@@ -51,6 +51,14 @@ export default function Auth() {
         type: "success",
         content: "Register successfully",
       });
+
+      setRegisterData({
+        email: "",
+        firstname: "",
+        lastname: "",
+        phoneNumber: "",
+        password: "",
+      });
     } catch (error) {
       setMessage({
         ...message,
