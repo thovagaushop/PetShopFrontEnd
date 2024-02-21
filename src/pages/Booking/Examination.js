@@ -12,7 +12,8 @@ export default function Examination() {
     description: "",
   });
   const [bookings, setBookings] = useState([]);
-
+  const [availbleBookingSlot, setAvailbleBookingSlot] = useState(0);
+  const [bookingConfig, setBookingConfig] = useState(null);
   const [message, setMessage] = useState({
     open: false,
     vertical: "top",
@@ -63,6 +64,26 @@ export default function Examination() {
     });
   };
 
+  const fetchBookingConfig = async () => {
+    try {
+      const { data } = await instance.get("/config");
+      setBookingConfig(data);
+      if (data.maxPlaceExamination - data.currentExaminationBooking > 0) {
+        setAvailbleBookingSlot(
+          data.maxPlaceExamination - data.currentExaminationBooking
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBookingConfig();
+  }, []);
+
+  console.log(bookingConfig);
+
   return (
     <div className="px-[100px]">
       <Breadcrumbs />
@@ -90,6 +111,10 @@ export default function Examination() {
           <div className="font-bold text-[28px] mt-3 text-[var(--hover-color)]">
             Form booking an examination
           </div>
+
+          <div className="font-bold rounded-[10px] text-[20px] mt-3 text-white bg-[var(--violet-color)] p-2">
+            Availble slot: {availbleBookingSlot}
+          </div>
           <form
             className="mt-[30px] w-[80%] text-[16px] flex flex-col"
             onSubmit={handleSubmit}
@@ -101,6 +126,7 @@ export default function Examination() {
             <input
               onChange={(e) => setBooking({ ...booking, date: e.target.value })}
               value={booking.date}
+              disabled={!!!availbleBookingSlot}
               type="date"
               id="date"
               min={new Date().toISOString().split("T")[0]}
@@ -114,6 +140,7 @@ export default function Examination() {
             <input
               onChange={(e) => setBooking({ ...booking, time: e.target.value })}
               value={booking.time}
+              disabled={!!!availbleBookingSlot}
               type="time"
               id="time"
               name="time"
@@ -125,6 +152,7 @@ export default function Examination() {
               Description:
             </label>
             <textarea
+              disabled={!!!availbleBookingSlot}
               onChange={(e) =>
                 setBooking({ ...booking, description: e.target.value })
               }
@@ -141,6 +169,7 @@ export default function Examination() {
               className="mt-[30px] bg-[var(--violet-color)] rounded-[50px] text-white py-[10px] px-[20px] outline-none cursor-pointer hover:bg-[var(--hover-color)]"
               type="submit"
               value="Book Appointment"
+              disabled={!!!availbleBookingSlot}
             />
           </form>
         </div>
