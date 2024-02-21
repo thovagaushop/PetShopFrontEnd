@@ -3,90 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import instance from "../../api/axios";
 import { getProductImage } from "../../utils";
-import {
-  PayPalButtons,
-  PayPalScriptProvider,
-  usePayPalScriptReducer,
-} from "@paypal/react-paypal-js";
 import moment from "moment";
-
-const style = { layout: "vertical" };
-
-function createOrder(data) {
-  console.log("Tren cung", Number(data));
-  if (isNaN(data)) {
-    return null;
-  }
-  const bodyData = {
-    total: data.totalPrice,
-    address: data.address,
-  };
-  return fetch(
-    // "https://react-paypal-js-storybook.fly.dev/api/paypal/create-order",
-    "http://localhost:8080/api/paypal/booking/init",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${data.token}`,
-      },
-      // use the "body" param to optionally pass additional order information
-      // like product ids and quantities
-      body: JSON.stringify(bodyData),
-    }
-  )
-    .then((response) => response.json())
-    .then((order) => {
-      // Your code here after create the order
-      return order.id;
-    });
-}
-function onApprove(data) {
-  // replace this url with your server
-  return fetch(
-    // "https://react-paypal-js-storybook.fly.dev/api/paypal/capture-order",
-    "http://localhost:8080/api/paypal/booking/capture",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        orderID: data.orderID,
-      }),
-    }
-  )
-    .then((response) => response.json())
-    .then((orderData) => {
-      window.location.href = orderData.redirectLink;
-      // Your code here after capture the order
-      // window.location.href = "http";
-    });
-}
-
-const ButtonWrapper = ({ showSpinner, data, onUpdate }) => {
-  const [{ isPending }] = usePayPalScriptReducer();
-  console.log({ data });
-  const amountRef = useRef(data);
-  useEffect(() => {
-    amountRef.current = data;
-  }, [data]);
-  return (
-    <>
-      {showSpinner && isPending && <div className="spinner" />}
-      {!isNaN(data) && (
-        <PayPalButtons
-          style={style}
-          disabled={false}
-          forceReRender={[style]}
-          fundingSource={undefined}
-          createOrder={(data) => createOrder(data)}
-          onApprove={onApprove}
-        />
-      )}
-    </>
-  );
-};
+import Paypal from "../../components/paypal/Paypal";
 
 export default function TakeCare() {
   const userInfo = useSelector((state) => state.orebiReducer.userInfo);
@@ -107,9 +25,19 @@ export default function TakeCare() {
   });
   const [isPayed, setIsPayed] = useState(false);
   const [service, setService] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const handleCloseSnack = () => {
     setMessage({ ...message, open: false });
+  };
+
+  const handleMessage = (mess, status) => {
+    setMessage({
+      ...message,
+      open: true,
+      type: status,
+      content: mess,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -126,7 +54,7 @@ export default function TakeCare() {
     }
     try {
       await instance.post(
-        `take-care-bookings`,
+        `/-take-care-bookings`,
         { ...booking },
         {
           headers: {
@@ -186,14 +114,16 @@ export default function TakeCare() {
         total += ser.price;
       }
     }
-
-    return total;
+    setTotalPrice(total);
   };
 
   useEffect(() => {
     fetchBookingConfig();
   }, []);
-  console.log(service);
+
+  useEffect(() => {
+    calculatePrice();
+  }, [booking, service]);
   return (
     <div className="px-[100px]">
       <Breadcrumbs />
@@ -315,11 +245,13 @@ export default function TakeCare() {
             {/* Food 1 */}
             <div className="flex flex-row justify-around">
               <div className="w-[130px] h-[150px] border border-[var(--hover-color)] hover:bg-[var(--hover-color)] hover:text-white flex flex-col items-center justify-around cursor-pointer">
-                <img
-                  src={getProductImage(bookingConfig?.food1Image)}
-                  className="w-[60px] h-[60px]"
-                  alt="Imagefood1"
-                />
+                {bookingConfig?.food1Image && (
+                  <img
+                    src={getProductImage(bookingConfig?.food1Image)}
+                    className="w-[60px] h-[60px]"
+                    alt="Imagefood1"
+                  />
+                )}
                 <div className="mt-2">
                   <div>
                     {bookingConfig?.food1}: ${bookingConfig?.food1Price}
@@ -335,7 +267,11 @@ export default function TakeCare() {
                           if (!service.some((el) => el.id === 1)) {
                             setService((prev) => [
                               ...prev,
-                              { id: 1, price: bookingConfig?.food1Price },
+                              {
+                                id: 1,
+                                price: bookingConfig?.food1Price,
+                                name: bookingConfig?.food1,
+                              },
                             ]);
                           }
                         }
@@ -353,11 +289,13 @@ export default function TakeCare() {
               </div>
               {/* Food 2 */}
               <div className="w-[130px] h-[150px] border border-[var(--hover-color)] hover:bg-[var(--hover-color)] hover:text-white flex flex-col items-center justify-around cursor-pointer">
-                <img
-                  src={getProductImage(bookingConfig?.food2Image)}
-                  className="w-[60px] h-[60px]"
-                  alt="Imagefood1"
-                />
+                {bookingConfig?.food2Image && (
+                  <img
+                    src={getProductImage(bookingConfig?.food2Image)}
+                    className="w-[60px] h-[60px]"
+                    alt="Imagefood1"
+                  />
+                )}
                 <div className="mt-2">
                   <div>
                     {bookingConfig?.food2}: ${bookingConfig?.food2Price}
@@ -373,7 +311,11 @@ export default function TakeCare() {
                           if (!service.some((el) => el.id === 2)) {
                             setService((prev) => [
                               ...prev,
-                              { id: 2, price: bookingConfig?.food2Price },
+                              {
+                                id: 2,
+                                price: bookingConfig?.food2Price,
+                                name: bookingConfig?.food2,
+                              },
                             ]);
                           }
                         }
@@ -391,11 +333,13 @@ export default function TakeCare() {
               </div>
               {/* Food 3 */}
               <div className="w-[130px] h-[150px] border border-[var(--hover-color)] hover:bg-[var(--hover-color)] hover:text-white flex flex-col items-center justify-around cursor-pointer">
-                <img
-                  src={getProductImage(bookingConfig?.food3Image)}
-                  className="w-[60px] h-[60px]"
-                  alt="Imagefood1"
-                />
+                {bookingConfig?.foodImage3 && (
+                  <img
+                    src={getProductImage(bookingConfig?.food3Image)}
+                    className="w-[60px] h-[60px]"
+                    alt="Imagefood1"
+                  />
+                )}
                 <div className="mt-2">
                   <div>
                     {bookingConfig?.food3}: ${bookingConfig?.food3Price}
@@ -411,7 +355,11 @@ export default function TakeCare() {
                           if (!service.some((el) => el.id === 3)) {
                             setService((prev) => [
                               ...prev,
-                              { id: 3, price: bookingConfig?.food3Price },
+                              {
+                                id: 3,
+                                price: bookingConfig?.food3Price,
+                                name: bookingConfig?.food3,
+                              },
                             ]);
                           }
                         }
@@ -448,7 +396,11 @@ export default function TakeCare() {
                         if (!service.some((el) => el.id === 4)) {
                           setService((prev) => [
                             ...prev,
-                            { id: 4, price: bookingConfig?.service1Price },
+                            {
+                              id: 4,
+                              price: bookingConfig?.service1Pric,
+                              name: bookingConfig?.service1,
+                            },
                           ]);
                         }
                       }
@@ -477,7 +429,11 @@ export default function TakeCare() {
                         if (!service.some((el) => el.id === 5)) {
                           setService((prev) => [
                             ...prev,
-                            { id: 5, price: bookingConfig?.service2Price },
+                            {
+                              id: 5,
+                              price: bookingConfig?.service2Price,
+                              name: bookingConfig?.service2,
+                            },
                           ]);
                         }
                       }
@@ -493,28 +449,20 @@ export default function TakeCare() {
                 />
               </div>
             </div>
-
-            {!isPayed && (
-              <div className="my-[30px] flex flex-col items-center rounded-[50px] text-white py-[10px] px-[20px] outline-none">
-                <PayPalScriptProvider
-                  options={{
-                    clientId:
-                      "AVwcw0eLPB9IBe0MzQxXeBkwF7nSvxYAuUHst18DIyNipw7RFC8dzIndE4eNugKohwHZs03kNQfaL4c-",
-                    components: "buttons",
-                    currency: "USD",
+            {bookingConfig && (
+              <div className="my-[30px] ">
+                <Paypal
+                  amount={totalPrice / 2}
+                  payload={{
+                    booking,
+                    service,
+                    totalPrice,
+                    token: userInfo.token,
                   }}
-                >
-                  <ButtonWrapper showSpinner={false} data={calculatePrice()} />
-                </PayPalScriptProvider>
+                  handleMessage={handleMessage}
+                />
               </div>
             )}
-
-            <input
-              className="my-[30px] bg-[var(--violet-color)] rounded-[50px] text-white py-[10px] px-[20px] outline-none cursor-pointer hover:bg-[var(--hover-color)]"
-              onClick={handleSubmit}
-              value="Booking"
-              disabled={!!!availbleBookingSlot}
-            />
           </form>
         </div>
       </div>
