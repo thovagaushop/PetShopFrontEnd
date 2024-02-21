@@ -26,6 +26,8 @@ const ButtonWrapper = ({
       },
     });
   }, [currency, showSpinner]);
+  console.log({ payload });
+  console.log({ amount });
   return (
     <>
       {showSpinner && isPending && <div className="spinner" />}
