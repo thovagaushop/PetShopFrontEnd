@@ -398,7 +398,7 @@ export default function TakeCare() {
                             ...prev,
                             {
                               id: 4,
-                              price: bookingConfig?.service1Pric,
+                              price: bookingConfig?.service1Price,
                               name: bookingConfig?.service1,
                             },
                           ]);
