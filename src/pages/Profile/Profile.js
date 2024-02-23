@@ -103,7 +103,7 @@ export default function Profile() {
           {message.content}
         </Alert>
       </Snackbar>
-      <div className="mt-[100px] w-[50%] h-[800px] border-[5px] border-[var(--grey-background-header)] flex flex-col justify-start items-center">
+      <div className="mt-[100px] w-[50%] h-[800px] border-[8px] border-[var(--grey-background-header)] flex flex-col justify-start items-center">
         <div className="font-bold text-[32px] mt-3 text-[var(--hover-color)]">
           User profile
         </div>
@@ -123,6 +123,8 @@ export default function Profile() {
             value={user.email}
             className="w-[100%] outline-none text-[var(--grey-bolder)] w-[300px]"
             required
+            readOnly
+            style={{ borderRadius: '8px', border: '1px solid black', padding: '8px' }}
           />
 
           <label for="date" className="my-[20px]">
@@ -137,6 +139,7 @@ export default function Profile() {
             placeholder="Firstname"
             className="w-[100%] outline-none text-[var(--grey-bolder)] w-[300px]"
             required
+            style={{ borderRadius: '8px', border: '1px solid black', padding: '8px' }}
           />
 
           <label for="date" className="my-[20px]">
@@ -151,6 +154,7 @@ export default function Profile() {
             placeholder="Last name"
             className="w-[100%] outline-none text-[var(--grey-bolder)] w-[300px]"
             required
+            style={{ borderRadius: '8px', border: '1px solid black', padding: '8px' }}
           />
 
           <label for="date" className="my-[20px]">
@@ -165,6 +169,7 @@ export default function Profile() {
             placeholder="Phone Number"
             className="w-[100%] outline-none text-[var(--grey-bolder)] w-[300px]"
             required
+            style={{ borderRadius: '8px', border: '1px solid black', padding: '8px' }}
           />
 
           <label for="date" className="my-[20px]">
@@ -179,6 +184,7 @@ export default function Profile() {
             placeholder="Address"
             className="w-[100%] outline-none text-[var(--grey-bolder)] w-[300px]"
             required
+            style={{ borderRadius: '8px', border: '1px solid black', padding: '8px' }}
           />
 
           <label for="date" className="my-[20px]">
@@ -192,6 +198,7 @@ export default function Profile() {
             placeholder="Password"
             className="w-[100%] outline-none text-[var(--grey-bolder)] w-[300px]"
             required
+            style={{ borderRadius: '8px', border: '1px solid black', padding: '8px' }}
           />
 
           <input

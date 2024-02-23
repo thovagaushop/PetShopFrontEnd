@@ -24,14 +24,6 @@ export default function ShopByPet() {
           <img className="paw1" src={pawSolid1} alt="" />
           <img className="paw2" src={pawSolid2} alt="" />
         </div>
-        <div className="icons">
-          <button>
-            <i className="fa-solid fa-chevron-left"></i>
-          </button>
-          <button>
-            <i className="fa-solid fa-chevron-right"></i>
-          </button>
-        </div>
       </div>
       <div className="pet-type">
         <div className="element" onClick={handleClick}>

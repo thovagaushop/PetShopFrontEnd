@@ -29,7 +29,7 @@ export default function Navbar() {
           }}
         ></i>
         <span style={{ paddingRight: 10 }}>24/7 Support</span>
-        <span style={{ color: "var(--hover-color)" }}>(877) 834 1434</span>
+        <span style={{ color: "var(--hover-color)" }}>(84) 123 456 789</span>
       </div>
     </nav>
   );

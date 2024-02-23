@@ -293,3 +293,11 @@ header {
 .lost:hover {
     color: black;
 }
+
+.dancing-script {
+    font-family: "Dancing Script", cursive;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+  }
+  

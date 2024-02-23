@@ -29,16 +29,6 @@ export const navBarList = [
     link: "/shop",
   },
   {
-    _id: 1003,
-    title: "Pages",
-    link: "/page",
-  },
-  {
-    _id: 1004,
-    title: "Blog",
-    link: "/blog",
-  },
-  {
     _id: 1005,
     title: "Contact",
     link: "/contact",
@@ -50,7 +40,7 @@ export const navBarList = [
   },
   {
     _id: 1007,
-    title: "Examination",
+    title: "Pet Health Check Up",
     link: "/examination",
   },
 ];

@@ -109,7 +109,7 @@ export default function Examination() {
       <div className="flex justify-around items-center gap-10">
         <div className="mt-[100px] w-[50%] h-[700px] border-[5px] border-[var(--grey-background-header)] flex flex-col justify-start items-center">
           <div className="font-bold text-[28px] mt-3 text-[var(--hover-color)]">
-            Form booking an examination
+            Form Booking Pet Health Check-Up
           </div>
 
           <div className="font-bold rounded-[10px] text-[20px] mt-3 text-white bg-[var(--violet-color)] p-2">
