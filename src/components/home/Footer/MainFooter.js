@@ -31,25 +31,9 @@ export default function MainFooter() {
               fontSize: 20,
             }}
           >
-            (877) 834 1434
+            (84) 123 456 789
           </div>
 
-          <div>
-            <div className="social-icons">
-              <div className="social-icon">
-                <i className="fa-brands fa-facebook"></i>
-              </div>
-              <div className="social-icon">
-                <i className="fa-brands fa-twitter"></i>
-              </div>
-              <div className="social-icon">
-                <i className="fa-brands fa-instagram"></i>
-              </div>
-              <div className="social-icon">
-                <i className="fa-brands fa-pinterest"></i>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className="footer2">
@@ -103,39 +87,7 @@ export default function MainFooter() {
           </div>
         </div>
 
-        <div className="footer2">
-          <div
-            style={{ fontSize: 14, fontWeight: "bold", paddingBottom: 60 }}
-            className="footer-element-title"
-          >
-            NEWSLETTER
-          </div>
-          <div
-            style={{
-              width: 263,
-              fontSize: 14,
-              color: "#666666",
-              paddingBottom: 30,
-            }}
-          >
-            Subscrible & get <span style={{ color: "#FF782C" }}>10%</span>{" "}
-            discount. Get E-mail updates about our latest shop and{" "}
-            <span style={{ color: "#FF782C" }}>special offers</span>
-          </div>
-          <div className="email-input">
-            <input type="text" placeholder="Enter your email..." />
-            <div>
-              <i className="fa-regular fa-envelope"></i>
-            </div>
-          </div>
-          <div style={{ fontSize: 24, fontWeight: "bold", paddingTop: 30 }}>
-            Download Our App
-          </div>
-          <div style={{ paddingTop: 30, display: "flex" }}>
-            <img src={appStore} width="130px" height="40px" alt="" />
-            <img src={googlePlay} width="130px" height="40px" alt="" />
-          </div>
-        </div>
+
       </div>
       <hr style={{ border: "1px solid #E5E5E5", width: 90 }} />
       <div className="footer-last" style={{ color: "#666" }}>
@@ -143,9 +95,7 @@ export default function MainFooter() {
           Copyright <i className="fa-regular fa-copyright"></i> 2022{" "}
           <span style={{ color: "black" }}>Ziggy</span>. All rights reserved
         </div>
-        <div>
-          <img src={payService} alt="" />
-        </div>
+
         <div style={{ display: "flex", alignItem: "center" }}>
           <div>Privacy & Cookie Policy</div>
           <hr

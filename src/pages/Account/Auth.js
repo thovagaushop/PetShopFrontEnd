@@ -167,21 +167,21 @@ export default function Auth() {
                   }
                 />
                 <p style={{ padding: 10 }}>
-                  <input
+                  {/* <input
                     style={{ width: 14, height: 14, marginRight: 10 }}
-                    type="checkbox"
+                    // type="checkbox"
                     onChange={(e) =>
                       setLoginData({
                         ...loginData,
                         rememberMe: e.target.checked,
                       })
                     }
-                  />
-                  <label for="">remember me</label>
+                  /> */}
+               
                 </p>
                 <button type="submit">Log in</button>
               </form>
-              <a
+              {/* <a
                 href="##?"
                 style={{
                   display: "flex",
@@ -191,7 +191,7 @@ export default function Auth() {
                 }}
               >
                 Lost your Password?
-              </a>
+              </a> */}
             </div>
           )}
 

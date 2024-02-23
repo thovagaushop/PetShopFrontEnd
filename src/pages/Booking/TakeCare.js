@@ -150,7 +150,7 @@ export default function TakeCare() {
       <div className="flex justify-center items-center gap-10">
         <div className="mt-[100px] w-[50%] border-[5px] border-[var(--grey-background-header)] flex flex-col justify-start items-center">
           <div className="font-bold text-[32px] mt-3 text-[var(--hover-color)]">
-            Form booking an examination
+            Form Booking Take Care
           </div>
 
           <div className="font-bold rounded-[10px] text-[20px] mt-3 text-white bg-[var(--violet-color)] p-2">

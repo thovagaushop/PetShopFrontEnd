@@ -7,6 +7,9 @@ import { Alert, Snackbar } from "@mui/material";
 import instance from "../../../api/axios";
 import { addToCart, login, logout, resetCart } from "../../../redux/orebiSlice";
 
+
+
+
 export default function MainHeader() {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const formRef = useRef(null);
@@ -132,64 +135,18 @@ export default function MainHeader() {
           {message.content}
         </Alert>
       </Snackbar>
-      <div className="top-header">
-        <div className="top-header-element">
-          <div className="service">
-            <i className="fa-solid fa-location-dot"></i>
-            <span>Find a Store</span>
-          </div>
-          <div className="service">
-            <i className="fa-solid fa-truck"></i>
-            <span>Order Tracking</span>
-          </div>
-        </div>
-        <div className="top-header-element">
-          <div className="sale-value">15% Off</div>
-          <div className="sale-content">
-            $50+ when you buy online & pick up in-store
-          </div>
-        </div>
-        <div className="top-header-element">
-          <div className="currency">USD</div>
-          <div className="language">English</div>
-        </div>
-      </div>
+
 
       <div className="main-header">
         <NavLink to={"/"} state={{ data: location.pathname.split("/")[1] }}>
           <img src={logoMainHeader} alt="" />
         </NavLink>
-        <div className="main-header-search">
-          <input type="text" placeholder="Search for products..." />
-          <button>
-            <i
-              className="fa-solid fa-search"
-              style={{ color: "white", fontSize: "18" }}
-            ></i>
-          </button>
-        </div>
         <div className="main-header-commit">
-          <div className="commit-element">
-            <i className="fa-solid fa-gift"></i>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: "bold" }}>
-                Free Shipping
-              </div>
-              <div style={{ fontSize: 12, color: "#666666" }}>
-                Details & Restrictions
-              </div>
-            </div>
-          </div>
-          <div className="commit-element">
-            <i className="fa-solid fa-circle-check"></i>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: "bold" }}>
-                100% Satisfaction
-              </div>
-              <div style={{ fontSize: 12, color: "#666666" }}>
-                30 Days no hassle
-              </div>
-            </div>
+          <div className="dancing-script" style={{
+            fontSize: '46px',
+            color: '#DB7039'
+          }}>
+            WELCOME TO PET SHOP
           </div>
         </div>
         <div className="main-header-information">
@@ -232,7 +189,7 @@ export default function MainHeader() {
                     <button onClick={handleLogin}>LOGIN</button>
                     <NavLink to="/lost-password">
                       <div className="lost" href="">
-                        Lost your password?
+                        Reset Password
                       </div>
                     </NavLink>
                   </div>
@@ -282,8 +239,6 @@ export default function MainHeader() {
           </div>
 
           <div className="information-icon">
-            <i className="fa-solid fa-heart"></i>
-            <span className="count">0</span>
           </div>
           <Link to="/cart">
             <div className="information-icon">
@@ -291,7 +246,7 @@ export default function MainHeader() {
               <span className="count">{products.length ?? 0}</span>
             </div>
           </Link>
-          <span style={{ fontSize: 14, fontWeight: "bold" }}>$ 0.00</span>
+
         </div>
       </div>
     </header>
