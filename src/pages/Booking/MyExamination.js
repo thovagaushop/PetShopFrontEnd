@@ -74,7 +74,7 @@ export default function MyExamination() {
           vertical: message.vertical,
           horizontal: message.horizontal,
         }}
-        autoHideDuration={3000}
+        autoHideDuration={1000}
         open={message.open}
         onClose={handleCloseSnack}
         message="I love snacks"

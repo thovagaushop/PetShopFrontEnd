@@ -91,7 +91,7 @@ export default function Auth() {
         ...message,
         open: true,
         type: "error",
-        content: error.response.data.message,
+        content: "Invalid Email or Password",
       });
     }
   };
@@ -104,7 +104,7 @@ export default function Auth() {
           vertical: message.vertical,
           horizontal: message.horizontal,
         }}
-        autoHideDuration={3000}
+        autoHideDuration={1000}
         open={message.open}
         onClose={handleCloseSnack}
         message="I love snacks"

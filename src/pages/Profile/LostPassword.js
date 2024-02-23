@@ -36,13 +36,13 @@ export default function LostPassword() {
     }
   };
   return (
-    <div className="px-[100px] flex justify-center">
+    <div className="px-[100px] flex flex-col items-center justify-center">
       <Snackbar
         anchorOrigin={{
           vertical: message.vertical,
           horizontal: message.horizontal,
         }}
-        autoHideDuration={3000}
+        autoHideDuration={1000}
         open={message.open}
         onClose={handleCloseSnack}
         message="I love snacks"
@@ -57,7 +57,7 @@ export default function LostPassword() {
           {message.content}
         </Alert>
       </Snackbar>
-      <div className="mt-[100px] w-[40%] h-[100px] border-2 border-[var(--hover-color)] flex flex-col justify-around items-center rounded-[30px]">
+      <div className="mt-[150px] w-[40%] h-[100px] border-2 border-[var(--hover-color)] flex flex-col justify-around items-center rounded-[30px]">
         <div className="bg-[var(--grey-border)] outline-none text-[var(--hover-color)] font-bold mt-1 focus:outline-none focus:border-[var(--hover-color)] focus:ring-0">
           Email
         </div>

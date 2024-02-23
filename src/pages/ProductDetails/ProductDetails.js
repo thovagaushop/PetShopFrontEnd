@@ -67,6 +67,15 @@ const ProductDetails = () => {
 
   const handleAddToCart = async () => {
     if (quantity <= 0) return;
+    if (!userData.token) {
+      setMessage({
+        ...message,
+        open: true,
+        type: "error",
+        content: "You need to log in to add the product to the cart.!!!",
+      });
+      return;
+    }
     const headers = {
       Authorization: `Bearer ${userData.token}`,
     };
@@ -135,7 +144,7 @@ const ProductDetails = () => {
           vertical: message.vertical,
           horizontal: message.horizontal,
         }}
-        autoHideDuration={3000}
+        autoHideDuration={1000}
         open={message.open}
         onClose={handleCloseSnack}
         message="I love snacks"
